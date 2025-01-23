@@ -29,61 +29,34 @@ const AddMedicinePage: React.FC = () => {
         medicineName: '',
         brandName: '',
         productType: '',
-        drugCategory: '',
         doseFormId: '',
-        strength: '',
+        weightage: '',
         manufacturer: '',
         packSize: '',
         price: 0,
         routeOfAdministration: '',
-        TherapeuticClass: '',
-        indications: '',
         sideEffects: '',
-        contraindications: '',
-        storageConditions: '',
-        shelfLife: '',
         prescriptionReq: '',
-        approvalInfo: '',
         barcodeSKU: '',
-        batchNumber: '',
-        interactions: '',
-        countryOfOrigin: '',
         ndc: '',
-        distributor: '',
-        specialConsiderations: '',
         scheduleType: '',
         gstPercentage: 0
-        // expiryDate: null,
     });
 
     const [formError, setFormError] = useState<any>({
         medicineName: false,
         brandName: false,
         productType: false,
-        drugCategory: false,
         doseFormId: false,
         strength: false,
         manufacturer: false,
         packSize: false,
         price: false,
-        routeOfAdministration: false,
-        TherapeuticClass: false,
-        indications: false,
-        sideEffects: false,
-        contraindications: false,
-        storageConditions: false,
-        shelfLife: false,
         prescriptionReq: false,
-        approvalInfo: false,
-        barcodeSKU: false,
-        batchNumber: false,
-        interactions: false,
-        countryOfOrigin: false,
-        ndc: false,
-        distributor: false,
-        specialConsiderations: false,
         scheduleType: false,
-        gstPercentage: false
+        gstPercentage: false,
+        weightage:false,
+        barcodeSKU:false
         // expiryDate: null,
     });
 
@@ -137,11 +110,18 @@ const AddMedicinePage: React.FC = () => {
     const handleSubmit = async () => {
 
         // e.preventDefault();
+        const updatedFormError = { ...formError };
+        
+        if (formData.productType !== 'Drug') {
+            updatedFormError.barcodeSKU = false;
+        } else {
+            delete updatedFormError.barcodeSKU; // Remove barcodeSKU from formError
+        }
         const checkFormError = validateFormData(
             {
                 ...formData,
             },
-            { ...formError }
+            updatedFormError
         );
         // checkFormError = {
         // 	...checkFormError,
@@ -207,28 +187,16 @@ const AddMedicinePage: React.FC = () => {
                     medicineName: '',
                     brandName: '',
                     productType: '',
-                    drugCategory: '',
                     doseFormId: '',
-                    strength: '',
+                    weightage: '',
                     manufacturer: '',
                     packSize: '',
                     price: 0,
                     routeOfAdministration: '',
-                    TherapeuticClass: '',
-                    indications: '',
                     sideEffects: '',
-                    contraindications: '',
-                    storageConditions: '',
-                    shelfLife: '',
                     prescriptionReq: 'Select',
-                    approvalInfo: 'Select',
                     barcodeSKU: '',
-                    batchNumber: '',
-                    interactions: '',
-                    countryOfOrigin: '',
                     ndc: '',
-                    distributor: '',
-                    specialConsiderations: '',
                     scheduleType: '',
                     gstPercentage: 0
                     // expiryDate: null,
@@ -243,37 +211,6 @@ const AddMedicinePage: React.FC = () => {
             }
         }
     };
-
-
-    // const handleSubmit = async () => {
-    //     setIsSubmitClick(true);
-    //     let _documentName = documentName.trim();
-    //     if (invalidText(documentName)) {
-    //         setHasError(true);
-    //         return;
-    //     }
-    //     _documentName = _documentName.replace(/ /g, '_');
-    //     if (!file) {
-    //         return;
-    //     }
-    //     try {
-    //         setIsLoading(true);
-    //         let formData = new FormData();
-    //         formData.append('documentName', _documentName);
-    //         formData.append('employeeId', employeeId);
-    //         formData.append('file', file);
-    //         await employeeApi.uploadEmployeeDocument(formData);
-    //         // await postApi('/employee/upload-docs', formData, true);
-    //         fetchDocumentData();
-
-    //     } catch (error: any) {
-    //         const message = error?.response?.data?.error?.description || 'Something went wrong in upload document';
-    //         toastText(message, 'error');
-    //     } finally {
-    //         setIsLoading(false);
-    //         handleModalCancel()
-    //     }
-    // };
 
     return (
         <div className="container mx-auto p-6">

@@ -10,7 +10,6 @@ import { invalidText, validateFormData } from '../helpers/utils';
 import SelectDropdown from './SelectDropdown';
 import { Image } from 'antd';
 import { configData } from '../helpers/config';
-import { countries } from "countries-list";
 import { Loader } from './Loader';
 
 interface MedicineFormProps {
@@ -32,45 +31,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
     let isRemoving = false;
     const [hasError, setHasError] = useState(false);
     console.log("🚀 ~ hasError:", hasError)
-
-    // const propsUpload = {
-    //     name: 'file',
-    //     accept: '.jpg,.jpeg,.png',
-    //     maxCount: 4,
-    //     fileList: fileList,
-    //     beforeUpload: (file: any) => {
-    //         return false; // Prevent automatic upload
-    //     },
-    //     onChange(info: any) {
-    //         const { file, fileList: newFileList } = info;
-
-    //         if (file?.size) {
-    //             const isLt1M = file.size / 1024 / 1024 < 1;
-    //             if (!isLt1M) {
-    //                 toast.error('Image must be smaller than 1MB!');
-    //                 return;
-    //             }
-    //         }
-
-    //         if (!isRemoving) {
-    //             // Filter valid files and limit the total count
-    //             const updatedFileList = newFileList.slice(-4).filter((file: any) => file.size / 1024 / 1024 < 1);
-    //             setFileList(updatedFileList);
-    //         } else {
-    //             isRemoving = false;
-    //         }
-    //     },
-    //     onDrop: () => {
-    //         setFile(null);
-    //         setFileList([]);
-    //     },
-    //     onRemove: (file: any) => {
-    //         isRemoving = true;
-    //         setFileList((prevList: any[]) => prevList.filter((item) => item.uid !== file.uid));
-    //     },
-    // };
-
-
 
     const propsUpload = {
         name: 'file',
@@ -128,7 +88,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         }
 
         OnChange(value, name);
-        // console.log("value",value)
     };
 
     const OnChange = (
@@ -246,41 +205,17 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                         <Col span={8}>
                             <InputField
-                                name="strength"
-                                value={formData?.strength}
-                                label="Strength"
+                                name="weightage"
+                                value={formData?.weightage}
+                                label="Weightage"
                                 required={true}
-                                helperText="Strength is required"
-                                placeholder="Strength"
-                                onChange={(value) => handleChangeValue(value, 'strength', true)}
-                                isError={formError.strength}
+                                helperText="Weightage is required"
+                                placeholder="Weightage"
+                                onChange={(value) => handleChangeValue(value, 'weightage', true)}
+                                isError={formError.weightage}
                                 disabled={false}
                             />
                         </Col>
-                        <Col span={8}>
-                            <SelectDropdown
-                                placeholder="Select Drug Category"
-                                options = {[
-                                    { label: 'H', value: 'H' },
-                                    { label: 'H1', value: 'H1' },
-                                    { label: 'G', value: 'G' },
-                                    { label: 'NRX', value: 'NRX' },
-                                    { label: 'TB', value: 'TB' },
-                                    { label: 'NON_SCHEDULE', value: 'NON_SCHEDULE' }
-                                  ]}
-                                value={formData.drugCategory}
-                                onChange={(value: any) => {
-                                    handleChangeValue(value, 'drugCategory', true);
-                                }}
-                                size="large"
-                                required={true}
-                                helperText="Drug category is required"
-                                label="Drug Category"
-                                disabled={false}
-                                isError={formError.drugCategory}
-                            />
-                        </Col>
-
                         {/* Dosage Form */}
                         <Col span={8}>
                             <SelectDropdown
@@ -317,20 +252,33 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                         {/* Pack Size */}
                         <Col span={8}>
-                            <InputField
-                                name="packSize"
+                            <SelectDropdown
+                                placeholder="Select pack size"
+                                options={[
+                                    { label: "Bottle", value: "BOTTLE" },
+                                    { label: "Strip", value: "STRIP" },
+                                    { label: "Jar", value: "JAR" },
+                                    { label: "Tube", value: "TUBE" },
+                                    { label: "Packet", value: "PACKET" },
+                                    { label: "Box", value: "BOX" },
+                                    { label: "Sachet", value: "SACHET" },
+                                    { label: "Vial", value: "VIAL" },
+                                    { label: "Kit", value: "KIT" },
+                                    { label: "Bag", value: "BAG" },
+                                ]}
                                 value={formData.packSize}
-                                label="Pack Size"
+                                onChange={(value: any) => {
+                                    handleChangeValue(value, 'packSize', true);
+                                }}
+                                size="large"
                                 required={true}
                                 helperText="Pack size is required"
-                                placeholder="Pack Size"
-                                onChange={(value) => handleChangeValue(value, 'packSize', true)}
-                                isError={formError.packSize}
+                                label="Pack Size"
                                 disabled={false}
+                                isError={formError.packSize}
                             />
                         </Col>
 
-                        {/* Price */}
                         <Col span={8}>
                             <InputField
                                 name="price"
@@ -352,102 +300,31 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 name="routeOfAdministration"
                                 value={formData.routeOfAdministration}
                                 label="Route of Administration"
-                                required={true}
+                                required={false}
                                 helperText="Route of administration is required"
                                 placeholder="Route of Administration"
-                                onChange={(value) => handleChangeValue(value, 'routeOfAdministration', true)}
+                                onChange={(value) => handleChangeValue(value, 'routeOfAdministration', false)}
                                 isError={formError.routeOfAdministration}
                                 disabled={false}
                             />
                         </Col>
 
-                        {/* Therapeutic Class */}
-                        <Col span={8}>
-                            <InputField
-                                name="TherapeuticClass"
-                                value={formData.TherapeuticClass}
-                                label="Therapeutic Class"
-                                required={true}
-                                helperText="Therapeutic class is required"
-                                placeholder="Therapeutic Class"
-                                onChange={(value) => handleChangeValue(value, 'TherapeuticClass', true)}
-                                isError={formError.TherapeuticClass}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        {/* Indications */}
-                        <Col span={8}>
-                            <InputField
-                                name="indications"
-                                value={formData.indications}
-                                label="Indications"
-                                required={true}
-                                helperText="Indications are required"
-                                placeholder="Indications"
-                                onChange={(value) => handleChangeValue(value, 'indications', true)}
-                                isError={formError.indications}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        {/* Side Effects */}
                         <Col span={8}>
                             <InputField
                                 name="sideEffects"
                                 value={formData.sideEffects}
                                 label="Side Effects"
-                                required={true}
+                                required={false}
                                 helperText="Side effects are required"
                                 placeholder="Side Effects"
-                                onChange={(value) => handleChangeValue(value, 'sideEffects', true)}
+                                onChange={(value) => handleChangeValue(value, 'sideEffects', false)}
                                 isError={formError.sideEffects}
                                 disabled={false}
                             />
                         </Col>
 
                         {/* Contraindications */}
-                        <Col span={8}>
-                            <InputField
-                                name="contraindications"
-                                value={formData.contraindications}
-                                label="Contraindications"
-                                required={true}
-                                helperText="Contraindications are required"
-                                placeholder="Contraindications"
-                                onChange={(value) => handleChangeValue(value, 'contraindications', true)}
-                                isError={formError.contraindications}
-                                disabled={false}
-                            />
-                        </Col>
-                        <Col span={8}>
-                            <InputField
-                                name="storageConditions"
-                                value={formData.storageConditions}
-                                label="Storage Conditions"
-                                required={true}
-                                helperText={formError.storageConditions ? "Storage Conditions is required" : ""}
-                                placeholder="Storage Conditions"
-                                onChange={(value) => handleChangeValue(value, 'storageConditions', true)}
-                                isError={!!formError.storageConditions}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        <Col span={8}>
-                            <InputField
-                                name="shelfLife"
-                                value={formData.shelfLife}
-                                label="Shelf Life"
-                                required={true}
-                                helperText={formError.shelfLife ? "Shelf Life is required" : ""}
-                                placeholder="Shelf Life"
-                                onChange={(value) => handleChangeValue(value, 'shelfLife', true)}
-                                isError={!!formError.shelfLife}
-                                disabled={false}
-                            />
-                        </Col>
-
+                        
                         <Col span={8}>
                             <SelectDropdown
                                 placeholder="Select Prescription Required"
@@ -468,99 +345,16 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            <SelectDropdown
-                                placeholder="Select Approval Info"
-                                options={[
-                                    // { label: 'Select', value: 'Select' },
-                                    { label: 'FDA', value: 'FDA' },
-                                    { label: 'EMA', value: 'EMA' }
-                                ]}
-                                value={formData.approvalInfo}
-                                onChange={(value) => handleChangeValue(value, 'approvalInfo', true)}
-                                size="large"
-                                required={true}
-                                helperText={formError.approvalInfo ? "Approval Info is required" : ""}
-                                label="Approval Info"
-                                disabled={false}
-                                isError={!!formError.approvalInfo}
-                            />
-                        </Col>
-
-
-                        <Col span={8}>
                             <InputField
                                 name="barcodeSKU"
                                 value={formData.barcodeSKU || ''}
                                 label="Barcode SKU (Unique) or GST In"
-                                required={true}
+                                required={false}
                                 helperText={formError.barcodeSKU ? "Barcode SKU is required" : ""}
                                 placeholder="Barcode SKU (Unique)"
-                                onChange={(value) => handleChangeValue(value, 'barcodeSKU', true)}
+                                onChange={(value) => handleChangeValue(value, 'barcodeSKU', false)}
                                 isError={!!formError.barcodeSKU}
                                 disabled={false}
-                            />
-                        </Col>
-
-                        <Col span={8}>
-                            <InputField
-                                name="batchNumber"
-                                value={formData.batchNumber}
-                                label="Batch Number"
-                                required={true}
-                                helperText={formError.batchNumber ? "Batch Number is required" : ""}
-                                placeholder="Batch Number"
-                                onChange={(value) => handleChangeValue(value, 'batchNumber', true)}
-                                isError={!!formError.batchNumber}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        <Col span={8}>
-                            <InputField
-                                name="interactions"
-                                value={formData.interactions}
-                                label="Drug Interactions"
-                                required={true}
-                                helperText={formError.interactions ? "Drug Interactions are required" : ""}
-                                placeholder="Drug Interactions"
-                                onChange={(value) => handleChangeValue(value, 'interactions', true)}
-                                isError={!!formError.interactions}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        {/* <Col span={8}>
-                            <InputField
-                                name="countryOfOrigin"
-                                value={formData.countryOfOrigin}
-                                label="Country of Origin"
-                                required={true}
-                                helperText={formError.countryOfOrigin ? "Country of Origin is required" : ""}
-                                placeholder="Country of Origin"
-                                onChange={(value) => handleChangeValue(value, 'countryOfOrigin', true)}
-                                isError={!!formError.countryOfOrigin}
-                                disabled={false}
-                            />
-                        </Col> */}
-
-                        <Col span={8}>
-                            <SelectDropdown
-                                placeholder="Select Country"
-                                options={[
-                                    // { label: 'Select', value: 'Select' },
-                                    ...Object.keys(countries).map(countryCode => ({
-                                        label: `${countryCode} - ${(countries as any)[countryCode].name}`,
-                                        value: countryCode,
-                                    })),
-                                ]}
-                                value={formData.countryOfOrigin}
-                                onChange={(value) => handleChangeValue(value, 'countryOfOrigin', true)}
-                                size="large"
-                                required={true}
-                                helperText={formError.countryOfOrigin ? "country of origin is required" : ""}
-                                label="country Of Origin"
-                                disabled={false}
-                                isError={!!formError.countryOfOrigin}
                             />
                         </Col>
 
@@ -569,54 +363,37 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 name="ndc"
                                 value={formData.ndc}
                                 label="NDC"
-                                required={true}
+                                required={false}
                                 helperText={formError.ndc ? "NDC is required" : ""}
                                 placeholder="NDC"
-                                onChange={(value) => handleChangeValue(value, 'ndc', true)}
+                                onChange={(value) => handleChangeValue(value, 'ndc', false)}
                                 isError={!!formError.ndc}
                                 disabled={false}
                             />
                         </Col>
 
                         <Col span={8}>
-                            <InputField
-                                name="distributor"
-                                value={formData.distributor}
-                                label="Distributor"
-                                required={true}
-                                helperText={formError.distributor ? "Distributor is required" : ""}
-                                placeholder="Distributor"
-                                onChange={(value) => handleChangeValue(value, 'distributor', true)}
-                                isError={!!formError.distributor}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        <Col span={8}>
-                            <InputField
-                                name="specialConsiderations"
-                                value={formData.specialConsiderations}
-                                label="Special Considerations"
-                                required={true}
-                                helperText={formError.specialConsiderations ? "Special Considerations are required" : ""}
-                                placeholder="Special Considerations"
-                                onChange={(value) => handleChangeValue(value, 'specialConsiderations', true)}
-                                isError={!!formError.specialConsiderations}
-                                disabled={false}
-                            />
-                        </Col>
-
-                        <Col span={8}>
-                            <InputField
-                                name="scheduleType"
+                           
+                            <SelectDropdown
+                                placeholder="Select schedule type"
+                                options={[
+                                    { label: 'H', value: 'H' },
+                                    { label: 'H1', value: 'H1' },
+                                    { label: 'G', value: 'G' },
+                                    { label: 'NRX', value: 'NRX' },
+                                    { label: 'TB', value: 'TB' },
+                                    { label: 'NON_SCHEDULE', value: 'NON_SCHEDULE' }
+                                ]}
                                 value={formData.scheduleType}
-                                label="Schedule Type"
+                                onChange={(value: any) => {
+                                    handleChangeValue(value, 'scheduleType', true);
+                                }}
+                                size="large"
                                 required={true}
-                                helperText={formError.scheduleType ? "Schedule Type is required" : ""}
-                                placeholder="Enter Schedule Type (e.g., Daily, Weekly, Monthly)"
-                                onChange={(value) => handleChangeValue(value, 'scheduleType', true)}
-                                isError={!!formError.scheduleType}
+                                helperText="Schedule Type is required"
+                                label="Schedule Type"
                                 disabled={false}
+                                isError={formError.scheduleType}
                             />
                         </Col>
                         <Col span={8}>
