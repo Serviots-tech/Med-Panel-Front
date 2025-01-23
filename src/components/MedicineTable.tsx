@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
 import { Button, Table } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ConfirmDeleteModal from '../components/buttons/ConfirmDeleteModal';
@@ -37,6 +37,18 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
     const context = useContext(PermissionContext);
 
     const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+
+    const [tableHeight, setTableHeight] = useState(0);
+
+    useEffect(() => {
+        // Calculate 40% of the screen height and set it
+        const updateTableHeight = () => setTableHeight(window.innerHeight * 0.6);
+        
+        updateTableHeight(); // Set height on initial render
+        window.addEventListener('resize', updateTableHeight); // Update on window resize
+
+        return () => window.removeEventListener('resize', updateTableHeight);
+    }, []);
 
 
     const handleDeleteClick = (medicine: Medicine) => {
@@ -189,7 +201,11 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                     pageSize: pagesize,
                     current: currentPage,
                     showSizeChanger: true,
-                    pageSizeOptions: ['20', '50'],
+                    pageSizeOptions: ['10','20', '50'],
+                }}
+                scroll={{
+                    y: tableHeight, // Maximum height of the table with vertical scrolling
+                    x: 'max-content', // Enables horizontal scrolling if the content overflows
                 }}
                 bordered // Adds border around the table
                 className="custom-table" // Custom class for additional styles

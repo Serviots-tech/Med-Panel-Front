@@ -41,17 +41,14 @@ const LoginComponent: React.FC = () => {
       setFormData({ email: '', password: '' })
     }
 
-
-    //api call goes here   
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
+      <div className="w-full max-w-4xl p-16 bg-white rounded-lg shadow-lg">
+        <h2 className="text-5xl font-bold text-center mb-10">Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="email">
+          <div className="mb-8">
+            <label className="block text-2xl font-semibold text-gray-700" htmlFor="email">
               Email
             </label>
             <input
@@ -60,13 +57,13 @@ const LoginComponent: React.FC = () => {
               id="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="mt-2 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Email"
+              className="mt-4 p-5 w-full text-2xl border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your email"
               required
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="password">
+          <div className="mb-10">
+            <label className="block text-2xl font-semibold text-gray-700" htmlFor="password">
               Password
             </label>
             <input
@@ -75,29 +72,22 @@ const LoginComponent: React.FC = () => {
               id="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="mt-2 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Password"
+              className="mt-4 p-5 w-full text-2xl border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your password"
               required
             />
           </div>
-          <div className="flex items-center justify-between mb-4">
-            <label className="inline-flex items-center text-sm text-gray-600">
-              <input
-                type="checkbox"
-                className="form-checkbox"
-                name="remember"
-              />
-              <span className="ml-2">Remember me</span>
+          <div className="flex items-center justify-between mb-8">
+            <label className="inline-flex items-center text-xl text-gray-600">
+              <input type="checkbox" className="form-checkbox w-6 h-6" name="remember" />
+              <span className="ml-4">Remember me</span>
             </label>
-            {/* <a href="#" className="text-sm text-blue-600 hover:text-blue-700">               
-              Forgot password?             
-            </a> */}
           </div>
           <Button
             type="primary"
             loading={loading}
             htmlType="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+            className="w-full py-5 text-2xl bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
           >
             Log in
           </Button>
@@ -105,6 +95,8 @@ const LoginComponent: React.FC = () => {
       </div>
     </div>
   );
+  
+  
 };
 
 export default LoginComponent;

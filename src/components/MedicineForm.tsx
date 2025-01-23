@@ -86,6 +86,13 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             const _regex = new RegExp(regex);
             setHasError(!_regex.test(value));
         }
+        if (name==='productType' && value !== 'drug') {
+            // Remove formError.barcodeSKU if it exists
+            if (formError.hasOwnProperty('barcodeSKU')) {
+              delete formError.barcodeSKU;
+              setFormError(formError)
+            }
+          }
 
         OnChange(value, name);
     };
@@ -106,6 +113,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         );
         setFormError(checkFormError);
     };
+
     return (
         <div>
             {isLoading ? (
@@ -435,7 +443,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     </div>
                 </form>
             )
-            };
+            }
         </div>
     );
 
