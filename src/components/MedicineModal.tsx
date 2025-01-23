@@ -48,7 +48,6 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFor
                         <Text>{medicine.price}</Text>
                     </Col>
                 </Row>
-
                 <Divider />
 
                 <Row gutter={24}>
@@ -57,12 +56,12 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFor
                         <Text>{medicine.productType}</Text>
                     </Col>
                     <Col span={8}>
-                        <Text strong>Drug Category :- </Text>
-                        <Text>{medicine.drugCategory}</Text>
-                    </Col>
-                    <Col span={8}>
                         <Text strong>Dosage Form :- </Text>
                         <Text>{getDoseFormName(medicine.doseFormId)}</Text>
+                    </Col>
+                    <Col span={8}>
+                        <Text strong>NDC :- </Text>
+                        <Text>{medicine.ndc}</Text>
                     </Col>
                 </Row>
 
@@ -71,7 +70,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFor
                 <Row gutter={24}>
                     <Col span={8}>
                         <Text strong>Strength :- </Text>
-                        <Text>{medicine.strength}</Text>
+                        <Text>{medicine.weightage}</Text>
                     </Col>
                     <Col span={8}>
                         <Text strong>Manufacturer :- </Text>
@@ -91,84 +90,24 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFor
                         <Text>{medicine.routeOfAdministration}</Text>
                     </Col>
                     <Col span={8}>
-                        <Text strong>Indications :- </Text>
-                        <Text>{medicine.indications}</Text>
-                    </Col>
-                    <Col span={8}>
                         <Text strong>Side Effects :- </Text>
                         <Text>{medicine.sideEffects}</Text>
                     </Col>
-                </Row>
 
-                <Divider />
-
-                <Row gutter={24}>
-                    <Col span={8}>
-                        <Text strong>Contraindications :- </Text>
-                        <Text>{medicine.contraindications}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>Storage Conditions :- </Text>
-                        <Text>{medicine.storageConditions}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>Shelf Life :- </Text>
-                        <Text>{medicine.shelfLife}</Text>
-                    </Col>
-                </Row>
-
-                <Divider />
-
-                <Row gutter={24}>
                     <Col span={8}>
                         <Text strong>Prescription Required :- </Text>
                         <Text>{medicine.prescriptionReq}</Text>
                     </Col>
-                    <Col span={8}>
-                        <Text strong>Approval Info :- </Text>
-                        <Text>{medicine.approvalInfo}</Text>
-                    </Col>
+                </Row>
+
+                <Divider />
+
+                <Row gutter={24}>
                     <Col span={8}>
                         <Text strong>Barcode SKU :- </Text>
                         <Text>{medicine.barcodeSKU}</Text>
                     </Col>
-                </Row>
 
-                <Divider />
-
-                <Row gutter={24}>
-                    <Col span={8}>
-                        <Text strong>Batch Number :- </Text>
-                        <Text>{medicine.batchNumber}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>Interactions :- </Text>
-                        <Text>{medicine.interactions}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>Therapeutic Class :- </Text>
-                        <Text>{medicine.TherapeuticClass}</Text>
-                    </Col>
-                </Row>
-
-                <Divider />
-
-                <Row gutter={24}>
-                    <Col span={8}>
-                        <Text strong>Country of Origin :- </Text>
-                        <Text>{medicine.countryOfOrigin}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>NDC :- </Text>
-                        <Text>{medicine.ndc}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>Distributor :- </Text>
-                        <Text>{medicine.distributor}</Text>
-                    </Col>
-                </Row>
-
-                <Row gutter={24}>
                     <Col span={8}>
                         <Text strong>Schedule Type :- </Text>
                         <Text>{medicine.scheduleType}</Text>
@@ -176,10 +115,6 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFor
                     <Col span={8}>
                         <Text strong>GST Percentage :- </Text>
                         <Text>{medicine.gstPercentage}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>Special Considerations :- </Text>
-                        <Text>{medicine.specialConsiderations}</Text>
                     </Col>
                 </Row>
 
