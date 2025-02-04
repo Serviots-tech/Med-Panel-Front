@@ -216,14 +216,14 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             <SelectDropdown
                                 placeholder="Select Unit"
                                 options={[
-                                    { label: 'gm', value: 'gm' },
-                                    { label: 'ml', value: 'ml' },
-                                    { label: 'kit', value: 'kit' },
-                                    { label: 'kg', value: 'kg' },
-                                    { label: 'piece', value: 'piece' },
-                                    { label: 'Tablet', value: 'Tablet' },
-                                    { label: 'Capsule', value: 'Capsule' },
-                                    { label: 'ltr', value: 'ltr' },
+                                    { label: 'Gm', value: 'GM' },
+                                    { label: 'Ml', value: 'ML' },
+                                    { label: 'Kit', value: 'KIT' },
+                                    { label: 'Kg', value: 'KG' },
+                                    { label: 'Piece', value: 'PIECE' },
+                                    { label: 'Tablet', value: 'TABLET' },
+                                    { label: 'Capsule', value: 'CAPSULE' },
+                                    { label: 'Ltr', value: 'LTR' },
                                     { label: 'MDI', value: 'MDI' }
 
                                 ]}
