@@ -11,16 +11,16 @@ const { Text } = Typography;
 interface MedicineModalProps {
     medicine: Medicine | null;
     onClose: () => void;
-    doseFormData:any
+    doseFormData: any
 }
 
-const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFormData }) => {
+const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFormData }) => {
     if (!medicine) return null;
 
-    const getDoseFormName = (doseFormId:string) => {
-        const matchedItem = doseFormData.find((item:any) => item.id === doseFormId);
+    const getDoseFormName = (doseFormId: string) => {
+        const matchedItem = doseFormData.find((item: any) => item.id === doseFormId);
         return matchedItem ? matchedItem.name : "Unknown";
-      };
+    };
 
     return (
         <Modal
@@ -54,6 +54,10 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose,doseFor
                     <Col span={8}>
                         <Text strong>Generic Name :- </Text>
                         <Text>{medicine.productType}</Text>
+                    </Col>
+                    <Col span={8}>
+                        <Text strong>Unit :- </Text>
+                        <Text>{medicine.unitType}</Text>
                     </Col>
                     <Col span={8}>
                         <Text strong>Dosage Form :- </Text>

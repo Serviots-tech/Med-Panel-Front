@@ -36,6 +36,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         name: 'file',
         accept: '.jpg,.jpeg,.png',
         maxCount: 4,
+        multiple: true,
         fileList: fileList,
         beforeUpload: () => {
             return false; // Prevent automatic upload
@@ -86,13 +87,13 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             const _regex = new RegExp(regex);
             setHasError(!_regex.test(value));
         }
-        if (name==='productType' && value !== 'drug') {
+        if (name === 'productType' && value !== 'drug') {
             // Remove formError.barcodeSKU if it exists
             if (formError.hasOwnProperty('barcodeSKU')) {
-              delete formError.barcodeSKU;
-              setFormError(formError)
+                delete formError.barcodeSKU;
+                setFormError(formError)
             }
-          }
+        }
 
         OnChange(value, name);
     };
@@ -150,7 +151,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 name="brandName"
                                 value={formData?.brandName}
                                 label="Brand Name"
-                                required={true}
+                                required={false}
                                 helperText="Brand name is required"
                                 placeholder="Brand Name"
                                 onChange={(value) => handleChangeValue(value, 'brandName', true)}
@@ -212,18 +213,34 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            <InputField
-                                name="weightage"
-                                value={formData?.weightage}
-                                label="Weightage"
+                            <SelectDropdown
+                                placeholder="Select Unit"
+                                options={[
+                                    { label: 'gm', value: 'gm' },
+                                    { label: 'ml', value: 'ml' },
+                                    { label: 'kit', value: 'kit' },
+                                    { label: 'kg', value: 'kg' },
+                                    { label: 'piece', value: 'piece' },
+                                    { label: 'Tablet', value: 'Tablet' },
+                                    { label: 'Capsule', value: 'Capsule' },
+                                    { label: 'ltr', value: 'ltr' },
+                                    { label: 'MDI', value: 'MDI' }
+
+                                ]}
+                                value={formData.unitType}
+                                onChange={(value: any) => {
+                                    handleChangeValue(value, 'unitType', true);
+                                }}
+                                size="large"
                                 required={true}
-                                helperText="Weightage is required"
-                                placeholder="Weightage"
-                                onChange={(value) => handleChangeValue(value, 'weightage', true)}
-                                isError={formError.weightage}
+                                helperText="Unit is required"
+
+                                label="Select Unit"
                                 disabled={false}
+                                isError={formError.unitType}
                             />
                         </Col>
+
                         {/* Dosage Form */}
                         <Col span={8}>
                             <SelectDropdown
@@ -242,6 +259,22 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 isError={formError.doseFormId}
                             />
                         </Col>
+
+
+                        <Col span={8}>
+                            <InputField
+                                name="weightage"
+                                value={formData?.weightage}
+                                label="Weightage"
+                                required={true}
+                                helperText="Weightage is required"
+                                placeholder="Weightage"
+                                onChange={(value) => handleChangeValue(value, 'weightage', true)}
+                                isError={formError.weightage}
+                                disabled={false}
+                            />
+                        </Col>
+
 
                         {/* Manufacturer */}
                         <Col span={8}>
@@ -281,7 +314,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 size="large"
                                 required={true}
                                 helperText="Pack size is required"
-                                label="Pack Size"
+                                label="Select Pack Size"
                                 disabled={false}
                                 isError={formError.packSize}
                             />
@@ -332,7 +365,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         {/* Contraindications */}
-                        
+
                         <Col span={8}>
                             <SelectDropdown
                                 placeholder="Select Prescription Required"
@@ -356,7 +389,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             <InputField
                                 name="barcodeSKU"
                                 value={formData.barcodeSKU || ''}
-                                label="Barcode SKU (Unique) or GST In"
+                                label="Barcode SKU (Unique) or GTIN"
                                 required={false}
                                 helperText={formError.barcodeSKU ? "Barcode SKU is required" : ""}
                                 placeholder="Barcode SKU (Unique)"
@@ -381,7 +414,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                           
+
                             <SelectDropdown
                                 placeholder="Select schedule type"
                                 options={[
@@ -421,6 +454,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 label="GST Percentage"
                                 disabled={false}
                                 isError={formError.gstPercentage}
+                               
                             />
                         </Col>
 

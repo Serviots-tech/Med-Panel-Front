@@ -28,7 +28,7 @@ const DoseFormTable: React.FC<DoseFormTableProps> = ({ doseForm, isLoading, hand
     const [doseFormToDelete, setDoseFormToDelete] = useState<any>(null);
     const [doseFormToEdit, setDoseFormToEdit] = useState<any>(null);
 
-    const [isDeleteLoading, setIsDeleteLoading] = useState(false)
+    const [isDeleteLoading, setIsDeleteLoading] = useState(false) 
 
 
     const handleDeleteClick = (doseForm: any) => {

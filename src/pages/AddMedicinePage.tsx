@@ -12,7 +12,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { hasFormError, validateFormData } from '../helpers/utils';
 import { Loader } from '../components/Loader';
 import { getApi } from '../apis';
-
+import { Button } from 'antd';
+import { PlusIcon } from '@heroicons/react/16/solid';
+import AddDoseFormModal from '../components/AddDoseFormModal';
 const AddMedicinePage: React.FC = () => {
 
     const { id } = useParams();
@@ -20,6 +22,8 @@ const AddMedicinePage: React.FC = () => {
 
     const [fileList, setFileList] = useState<any[]>([]);
     const [doseFormData, setDoseFormData] = useState<any>()
+    const [isAddDoseFormModalOpen, setIsAddDoseFormModalOpen] = useState(false);
+    const [doseFormToEdit, setDoseFormToEdit] = useState<any>(null);
     // const [hasError, setHasError] = useState(false);
     // const [documentName, setDocumentName] = useState('');
     // const [isSubmitClick, setIsSubmitClick] = useState(false);
@@ -33,6 +37,7 @@ const AddMedicinePage: React.FC = () => {
         weightage: '',
         manufacturer: '',
         packSize: '',
+        unitType: '',
         price: 0,
         routeOfAdministration: '',
         sideEffects: '',
@@ -45,18 +50,19 @@ const AddMedicinePage: React.FC = () => {
 
     const [formError, setFormError] = useState<any>({
         medicineName: false,
-        brandName: false,
+        // brandName: false,
         productType: false,
         doseFormId: false,
         strength: false,
         manufacturer: false,
         packSize: false,
+        unitType: false,
         price: false,
         prescriptionReq: false,
         scheduleType: false,
         gstPercentage: false,
-        weightage:false,
-        barcodeSKU:false
+        weightage: false,
+        // barcodeSKU:false
         // expiryDate: null,
     });
 
@@ -105,18 +111,17 @@ const AddMedicinePage: React.FC = () => {
         }
     }
 
-
     // Step 3: Handle form submission
     const handleSubmit = async () => {
 
         // e.preventDefault();
         const updatedFormError = { ...formError };
-        
-        if (formData.productType !== 'Drug') {
-            updatedFormError.barcodeSKU = false;
-        } else {
-            delete updatedFormError.barcodeSKU; // Remove barcodeSKU from formError
-        }
+
+        // if (formData.productType !== 'Drug') {
+        //     updatedFormError.barcodeSKU = false;
+        // } else {
+        //     delete updatedFormError.barcodeSKU; // Remove barcodeSKU from formError
+        // }
         const checkFormError = validateFormData(
             {
                 ...formData,
@@ -191,6 +196,7 @@ const AddMedicinePage: React.FC = () => {
                     weightage: '',
                     manufacturer: '',
                     packSize: '',
+                    unitType: '',
                     price: 0,
                     routeOfAdministration: '',
                     sideEffects: '',
@@ -214,7 +220,14 @@ const AddMedicinePage: React.FC = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <div className="flex items-center justify-between mt-5">
+
+            <div className="flex items-center justify-between mt-10">
+                <h1 className="text-4xl m-5 font-bold text-center absolute left-1/2 transform -translate-x-1/2">
+                    {id ? 'Edit' : 'Add'} Medicine
+                </h1>
+
+            </div>
+            <div className="flex justify-between">
                 <button
                     className="flex items-center text-blue-500 font-bold hover:text-blue-700"
                     onClick={() => navigate(-1)} // Assuming you're using React Router's `navigate`
@@ -230,12 +243,17 @@ const AddMedicinePage: React.FC = () => {
                     </svg>
                     Back
                 </button>
-                <h1 className="text-4xl m-5 font-bold text-center absolute left-1/2 transform -translate-x-1/2">
-                    {id ? 'Edit' : 'Add'} Medicine
-                </h1>
+                <Button
+                    type="primary"
+                    icon={<PlusIcon className="h-5 w-5 mr-2" />}
+                    onClick={() => {
+                        setIsAddDoseFormModalOpen(true)
+                    }}
+                >
+                    Add New DoseForm
+                </Button>
             </div>
-
-            <hr className='mt-10' />
+            <hr className='mt-5' />
             {/* Step 4: Pass formData and handlers to the MedicineForm component */}
             <MedicineForm
                 formError={formError}
@@ -248,6 +266,12 @@ const AddMedicinePage: React.FC = () => {
                 setFileList={setFileList}
                 fileList={fileList}
                 doseFormData={doseFormData}
+            />
+            <AddDoseFormModal
+                isAddDoseFormModalOpen={isAddDoseFormModalOpen}
+                setIsAddDoseFormModalOpen={setIsAddDoseFormModalOpen}
+                fetchDoseForms={fetchDoseForms}
+                doseFormToEdit={doseFormToEdit}
             />
         </div>
     );
