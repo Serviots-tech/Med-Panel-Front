@@ -23,7 +23,7 @@ const AddMedicinePage: React.FC = () => {
     const [fileList, setFileList] = useState<any[]>([]);
     const [doseFormData, setDoseFormData] = useState<any>()
     const [isAddDoseFormModalOpen, setIsAddDoseFormModalOpen] = useState(false);
-    const [doseFormToEdit, setDoseFormToEdit] = useState<any>(null);
+    // const [doseFormToEdit, setDoseFormToEdit] = useState<any>(null);
     // const [hasError, setHasError] = useState(false);
     // const [documentName, setDocumentName] = useState('');
     // const [isSubmitClick, setIsSubmitClick] = useState(false);
@@ -271,7 +271,7 @@ const AddMedicinePage: React.FC = () => {
                 isAddDoseFormModalOpen={isAddDoseFormModalOpen}
                 setIsAddDoseFormModalOpen={setIsAddDoseFormModalOpen}
                 fetchDoseForms={fetchDoseForms}
-                doseFormToEdit={doseFormToEdit}
+                doseFormToEdit={null}
             />
         </div>
     );
