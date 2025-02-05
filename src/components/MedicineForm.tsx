@@ -169,7 +169,11 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                     { label: 'Generic', value: 'Generic' },
                                     { label: 'Homeopathic', value: 'Homeopathic' },
                                     { label: 'Ayurvedic', value: 'Ayurvedic' },
-                                    { label: 'OTC', value: 'OTC' }
+                                    { label: 'OTC', value: 'OTC' },
+                                    { label: 'Dairy & Beverages', value: 'Dairy_Beverages' },
+                                    { label: 'Fruits & Vegetales', value: 'Fruits_vegetales' },
+                                    { label: 'Home & Kitchen', value: 'Home_Kitchen' },
+                                    { label: 'Jewelley', value: 'Jewelley' }
                                 ]}
                                 value={formData.productType}
                                 onChange={(value: any) => {
@@ -454,7 +458,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 label="GST Percentage"
                                 disabled={false}
                                 isError={formError.gstPercentage}
-                               
+
                             />
                         </Col>
 

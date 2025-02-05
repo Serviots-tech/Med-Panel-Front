@@ -26,7 +26,7 @@ interface MedicineTableProps {
     currentPage: number;
     totalRecords: number;
     pagesize: number;
-    isLoading:boolean
+    isLoading: boolean
 }
 
 const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
@@ -43,7 +43,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
     useEffect(() => {
         // Calculate 40% of the screen height and set it
         const updateTableHeight = () => setTableHeight(window.innerHeight * 0.6);
-        
+
         updateTableHeight(); // Set height on initial render
         window.addEventListener('resize', updateTableHeight); // Update on window resize
 
@@ -98,9 +98,19 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
             key: 'medicineName',
         },
         {
-            title: 'Brand Name',
-            dataIndex: 'brandName',
-            key: 'brandName',
+            title: 'Weightage',
+            dataIndex: 'weightage',
+            key: 'weightage',
+        },
+        {
+            title: 'Pack Size',
+            dataIndex: 'packSize',
+            key: 'packSize',
+        },
+        {
+            title: 'Product Type',
+            dataIndex: 'productType',
+            key: 'productType',
         },
         {
             title: 'Price',
@@ -156,22 +166,22 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                 <div className="flex space-x-4">
                     {context.userRole === "ADMIN" && (
                         <>
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                setIsAddUserModalOpen(true)
-                            }}
-                        >
-                            Add User
-                        </Button>
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                            navigate('/dose-form')
-                            }}
-                        >
-                            Dose Form
-                        </Button>
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    setIsAddUserModalOpen(true)
+                                }}
+                            >
+                                Add User
+                            </Button>
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    navigate('/dose-form')
+                                }}
+                            >
+                                Dose Form
+                            </Button>
                         </>
                     )}
                     <Button
@@ -201,7 +211,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                     pageSize: pagesize,
                     current: currentPage,
                     showSizeChanger: true,
-                    pageSizeOptions: ['10','20', '50'],
+                    pageSizeOptions: ['10', '20', '50'],
                 }}
                 scroll={{
                     y: tableHeight, // Maximum height of the table with vertical scrolling

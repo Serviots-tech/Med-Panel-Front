@@ -52,13 +52,10 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
 
                 <Row gutter={24}>
                     <Col span={8}>
-                        <Text strong>Generic Name :- </Text>
+                        <Text strong>Product Type :- </Text>
                         <Text>{medicine.productType}</Text>
                     </Col>
-                    <Col span={8}>
-                        <Text strong>Unit :- </Text>
-                        <Text>{medicine.unitType}</Text>
-                    </Col>
+
                     <Col span={8}>
                         <Text strong>Dosage Form :- </Text>
                         <Text>{getDoseFormName(medicine.doseFormId)}</Text>
@@ -122,6 +119,16 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                     </Col>
                 </Row>
 
+                <Divider />
+                <Row gutter={24}>
+
+                    <Col span={8}>
+                        <Text strong>Unit :- </Text>
+                        <Text>{medicine.unitType}</Text>
+                    </Col>
+
+
+                </Row>
                 <Divider />
 
                 <Row gutter={24}>
