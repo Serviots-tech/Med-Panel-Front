@@ -6,7 +6,7 @@ import MedicineTable from '../components/MedicineTable';
 import MedicineModal from '../components/MedicineModal';
 import { TablePaginationConfig } from 'antd';
 import { getApi } from '../apis';
-// import { FilterValue, SorterResult } from 'antd/es/table/interface';
+import dayjs from 'dayjs';
 
 const MedicineListPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,9 +17,11 @@ const MedicineListPage: React.FC = () => {
     const [debouncedSearch, setDebouncedSearch] = useState('');
 
     const [selectedField,setSelectedField]= useState('medicineName')
+    const [selectedUser,setSelectedUser]= useState(null)
+    const [selectDate,setSelectedDate]=useState(dayjs(new Date()))
+    const [userOptions, setUserOptions] = useState<any>()
 
     const debounceDelay = 700;
-    // const [loading, setLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setpageSize] = useState(10);
@@ -39,7 +41,7 @@ const MedicineListPage: React.FC = () => {
     const handleSearch = (value: string) => {
         setSearchValue(value);
     };
-    // Fetching the list of medicines
+
     const fetchMedicines = async () => {
         try {
             setIsLoading(true)
@@ -47,8 +49,11 @@ const MedicineListPage: React.FC = () => {
                 currentPage,
                 pageSize,
                 search: searchValue,
-                targetField: 'medicineName'
+                targetField: selectedField,
+                userId:selectedUser ?? null,
+                selectedDate:selectDate?? null,
             }
+            
             const response = await getMedicines(query);
 
             if (response && Array.isArray(response.data)) {
@@ -68,19 +73,17 @@ const MedicineListPage: React.FC = () => {
         }
     };
 
-    // Fetch the medicines when the component is mounted or when page/pageSize changes
     useEffect(() => {
         fetchMedicines();
-    }, [currentPage, pageSize, debouncedSearch]);
+    }, [currentPage, pageSize, debouncedSearch,selectedUser,selectDate,selectedField]);
 
 
-    // Handle opening the modal with medicine details
     const handleViewDetails = (medicine: Medicine) => {
         setSelectedMedicine(medicine);
         setIsModalOpen(true);
     };
 
-    // Handle closing the modal
+
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedMedicine(null);
@@ -88,6 +91,7 @@ const MedicineListPage: React.FC = () => {
 
     useEffect(() => {
         fetchDoseForms()
+        fetchUsersData()
     }, [])
 
     const fetchDoseForms = async () => {
@@ -97,7 +101,20 @@ const MedicineListPage: React.FC = () => {
         }
         catch (error: any) {
             console.log("🚀 ~ fetchDoseForms ~ error:", error)
-            // toast.error(error?.msg || "Fail to fetch dose form")
+            
+        }
+    }
+    const fetchUsersData = async () => {
+        try {
+            const userData:any = await getApi('/user/get-all')
+            const userOptionsData=userData?.data?.data?.map((item:any) => ({
+                label: item.name,
+                value: item.id
+            }));
+            setUserOptions(userOptionsData)
+        }
+        catch (error: any) {
+            console.log("🚀 ~ fetchDoseForms ~ error:", error)
         }
     }
 
@@ -115,8 +132,6 @@ const MedicineListPage: React.FC = () => {
 
     // Handle page change
     const handlePageChange = (pagination: TablePaginationConfig,
-        // filters: Record<string, FilterValue | null>,
-        // sorter: SorterResult<Medicine>[],
     ) => {
         setCurrentPage(pagination?.current as number)
         setTotalRecords(pagination?.total as number)
@@ -128,7 +143,6 @@ const MedicineListPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-center">All Medicine List</h1>
             <hr className='mt-5' />
             <div>
-                {/* Medicine Table */}
                 <MedicineTable
                     medicines={medicines}
                     isLoading={isLoading}
@@ -144,6 +158,13 @@ const MedicineListPage: React.FC = () => {
                     handleSearch={handleSearch}
                     setSelectedField={setSelectedField}
                     selectedField={selectedField}
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
+                    userOptions={userOptions}
+                    setSelectedDate={setSelectedDate}
+                    seletedDate={selectDate}
+                    setDebouncedSearch={setDebouncedSearch}
+                    setSearchValue={setSearchValue}
                 />
 
                 {/* Modal for Medicine Details */}

@@ -14,7 +14,9 @@ export const getMedicines = async (query: any) => {
                 page: query?.currentPage,
                 limit: query?.pageSize,
                 targetField:query?.targetField,
-                search:query?.search
+                search:query?.search,
+                userId:query?.userId,
+                selectedDate:query?.selectedDate
             },
             headers: {
 				Authorization: `bearer ${localStorage.getItem('accessToken')}`,
@@ -51,7 +53,7 @@ export const getMedicineById = async (id: string) => {
 
 // Create a new medicine
 export const createMedicine = async (medicineData: any) => {
-    try {
+
         const response = await axios.post(`${API_URL}/medicines/add`, medicineData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -59,16 +61,12 @@ export const createMedicine = async (medicineData: any) => {
             }
         });
         return response.data;
-    } catch (error: any) {
-        // Log the full error to see more details from the server
-        console.error("Error creating medicine:", error.response ? error.response.data : error.message);
-        throw new Error("Unable to create medicine");
-    }
+
 };
 
 // Update an existing medicine
 export const updateMedicine = async (id: string, medicineData: any) => {
-    try {
+
         const response = await axios.put(`${API_URL}/medicines/${id}`, medicineData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -77,10 +75,7 @@ export const updateMedicine = async (id: string, medicineData: any) => {
         });
         console.log('Medicine updated successfully', response.data);
         return response.data;
-    } catch (error) {
-        console.error(`Error updating medicine with ID ${id}:`, error);
-        throw new Error(`Unable to update medicine with ID: ${id}`);
-    }
+    
 };
 
 // Delete a medicine
