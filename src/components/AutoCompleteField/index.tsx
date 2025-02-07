@@ -26,8 +26,6 @@ type Props = {
 
 const AutoCompleteField = (props: Props) => {
 	const {
-		defaultOption = false,
-		defaultLabel,
 		value,
 		options,
 		placeholder,
@@ -43,10 +41,9 @@ const AutoCompleteField = (props: Props) => {
 		mode,
 		labelSuffixContent,
 		disabled = false,
-		loading = false,
 		isViewOnly = false,
 	} = props;
-
+	
 	const [hasError, setHasError] = useState(false);
 	const [inputValue, setInputValue] = useState<string | string[]>(value);
 
@@ -73,7 +70,7 @@ const AutoCompleteField = (props: Props) => {
 			{!options?.length && isViewOnly ? null : (
 				<>
 					{label && (
-						<p className={`label ${isViewOnly ? 'mb-1' : 'mb-2'} text-gray-700 font-semibold text-xs`}>
+						<p className={`${isViewOnly ? 'mb-1' : 'mb-2'} text-gray-700 font-semibold`}>
 							{label} {required && !isViewOnly && <span className="text-red-500">*</span>}
 							<Popover content={labelSuffixContent} trigger="hover" className="cursor-pointer">
 								{labelSuffix}

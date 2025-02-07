@@ -20,27 +20,13 @@ const SearchComponent = (props: Props) => {
 		value,
 		className,
 		suffixIcon,
-		prefixIcon,
 		size = 'large',
 	} = props;
-
-	// const debouncedSearch = useCallback(
-	// 	debounce((value: string) => handleChangeApi(value), 2000),
-	// 	[]
-	// );
 
 	// Handle input change
 	const handleSearchChange = (value: string) => {
 		handleChange(value);
-		// debouncedSearch(value);
 	};
-
-	// Cleanup the debounce effect on unmount
-	// useEffect(() => {
-	// 	return () => {
-	// 		debouncedSearch.cancel();
-	// 	};
-	// }, [debouncedSearch]);
 
 	return (
 		<Input

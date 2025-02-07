@@ -74,7 +74,7 @@ const SelectDropdown = (props: Props) => {
 				<>
 					{label && (
 						<p
-							className={`label ${isViewOnly ? 'mb-1' : 'mb-2'} text-gray-700 font-semibold text-xs`}
+							className={`${isViewOnly ? 'mb-1' : 'mb-2'} text-gray-700 font-semibold`}
 						>
 							{label}{' '}
 							{required && !isViewOnly && (

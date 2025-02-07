@@ -22,9 +22,9 @@ const LoginComponent: React.FC = () => {
   })
 
   const [hasError, setHasError] = useState(false);
+  console.log("🚀 ~ hasError:", hasError)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
+  const handleSubmit = async () => {
     const checkFormError = validateFormData(
       {
         ...formData,
