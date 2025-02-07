@@ -13,16 +13,22 @@ export const getMedicines = async (query: any) => {
             params: {
                 page: query?.currentPage,
                 limit: query?.pageSize,
+                targetField:query?.targetField,
+                search:query?.search,
+                userId:query?.userId,
+                selectedDate:query?.selectedDate
             },
+            headers: {
+				Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            }
         });
         return {
             data: response.data.data,
             pagination: response.data.pagination,
         };
     } catch (error) {
-        // Log the error and return a message or empty array
-        console.error("Error fetching medicines:", error);
-        throw new Error("Unable to fetch medicines");
+        // console.error("Error fetching medicines:", error);
+        // throw new Error("Unable to fetch medicines");
     }
 };
 
@@ -30,7 +36,13 @@ export const getMedicines = async (query: any) => {
 // Get a single medicine by ID
 export const getMedicineById = async (id: string) => {
     try {
-        const response = await axios.get(`${API_URL}/medicines/${id}`);
+        const response = await axios.get(`${API_URL}/medicines/${id}`,
+            {
+                headers: {
+                    Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+                }
+            }
+        );
         return response.data;
     } catch (error) {
         // Log the error and handle appropriately
@@ -41,34 +53,29 @@ export const getMedicineById = async (id: string) => {
 
 // Create a new medicine
 export const createMedicine = async (medicineData: any) => {
-    try {
+
         const response = await axios.post(`${API_URL}/medicines/add`, medicineData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
-            },
+				Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            }
         });
         return response.data;
-    } catch (error: any) {
-        // Log the full error to see more details from the server
-        console.error("Error creating medicine:", error.response ? error.response.data : error.message);
-        throw new Error("Unable to create medicine");
-    }
+
 };
 
 // Update an existing medicine
 export const updateMedicine = async (id: string, medicineData: any) => {
-    try {
+
         const response = await axios.put(`${API_URL}/medicines/${id}`, medicineData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
+                Authorization: `bearer ${localStorage.getItem('accessToken')}`,
             },
         });
         console.log('Medicine updated successfully', response.data);
         return response.data;
-    } catch (error) {
-        console.error(`Error updating medicine with ID ${id}:`, error);
-        throw new Error(`Unable to update medicine with ID: ${id}`);
-    }
+    
 };
 
 // Delete a medicine

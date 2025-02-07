@@ -22,7 +22,7 @@ const AddUserModal = ({ isAddUserModelOpen, setIsAddUserModelOpen }: { isAddUser
         }
         catch (e: any) {
             console.log("🚀 ~ handleSubmit ~ e:", e)
-            toast.error("Fail to create user,try again..")
+            toast.error(e?.response?.data?.message || "Fail to create user,try again..")
         }
         finally {
             setLoading(false);

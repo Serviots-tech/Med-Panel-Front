@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EyeIcon, PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
-import { Button, Table } from 'antd';
+import { Button, DatePicker, Table } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,6 +10,10 @@ import { Medicine } from '../types/medicine';
 import { PermissionContext } from './AuthLayout';
 import AddUserModal from './AddUserModal';
 import './MedicineTable.css';
+import { SearchOutlined } from '@ant-design/icons';
+import SearchComponent from './SearchComponent';
+import SelectDropdown from './SelectDropdown';
+import dayjs from 'dayjs';
 
 interface MedicineTableProps {
     medicines: Medicine[];
@@ -26,10 +30,21 @@ interface MedicineTableProps {
     currentPage: number;
     totalRecords: number;
     pagesize: number;
-    isLoading: boolean
+    isLoading: boolean;
+    searchValue: string
+    handleSearch: any;
+    setSelectedField: any;
+    selectedField: string;
+    selectedUser: string | null;
+    setSelectedUser: any;
+    userOptions: any;
+    setSelectedDate: any;
+    seletedDate: any;
+    setDebouncedSearch: any;
+    setSearchValue: any
 }
 
-const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
+const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSearch, setSearchValue, seletedDate, setSelectedDate, userOptions, selectedUser, setSelectedUser, setSelectedField, selectedField, searchValue, handleSearch, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
     const [medicineToDelete, setMedicineToDelete] = useState<Medicine | null>(null);
@@ -41,11 +56,10 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
     const [tableHeight, setTableHeight] = useState(0);
 
     useEffect(() => {
-        // Calculate 40% of the screen height and set it
         const updateTableHeight = () => setTableHeight(window.innerHeight * 0.6);
 
-        updateTableHeight(); // Set height on initial render
-        window.addEventListener('resize', updateTableHeight); // Update on window resize
+        updateTableHeight();
+        window.addEventListener('resize', updateTableHeight);
 
         return () => window.removeEventListener('resize', updateTableHeight);
     }, []);
@@ -87,9 +101,10 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
     // Columns for the Ant Design Table
     const columns = [
         {
-            title: '#',
+            title: 'Sr. No.',
             dataIndex: 'index',
             key: 'index',
+            width: 80,
             render: (_text: string, _record: Medicine, index: number) => index + 1,
         },
         {
@@ -123,20 +138,23 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
             render: (_: any, medicine: Medicine) => (
                 <div className="flex justify-center space-x-2">
                     <Button
-                        icon={<EyeIcon className="h-5 w-5" />}
+                        className='cursor-pointer'
+                        icon={<EyeIcon className="h-8 w-8" />}
                         onClick={() => onViewDetails(medicine)}
                         type="link"
                     >
                     </Button>
                     <Link to={`/add-medicine/${medicine.id}`}>
                         <Button
-                            icon={<PencilIcon className="h-5 w-5" />}
+                            className='cursor-pointer'
+                            icon={<PencilIcon className="h-8 w-8" />}
                             type="link"
                         >
                         </Button>
                     </Link>
                     {context.userRole === "ADMIN" && <Button
-                        icon={<TrashIcon className="h-5 w-5" />}
+                        className='cursor-pointer'
+                        icon={<TrashIcon className="h-8 w-8" />}
                         onClick={() => handleDeleteClick(medicine)}
                         type="link"
                         danger
@@ -149,7 +167,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
 
     return (
         <div className="p-4">
-            {/* Add New Button */}
+
             <div className="flex justify-between mb-4">
                 <div>
                     <Button
@@ -163,9 +181,11 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                         Add New Medicine
                     </Button>
                 </div>
+
                 <div className="flex space-x-4">
                     {context.userRole === "ADMIN" && (
                         <>
+
                             <Button
                                 type="primary"
                                 onClick={() => {
@@ -197,9 +217,91 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                 </div>
 
             </div>
+            <div className="flex justify-between mb-4">
+                <div>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            setSearchValue('');
+                            setDebouncedSearch('');
+                            setSelectedField('medicineName')
+                            setSelectedUser(null)
+                            setSelectedDate(dayjs(new Date()))
+                        }}
+                    >
+                        clear
+                    </Button>
+                </div>
 
+                <div className="flex space-x-4">
+                    {context.userRole === "ADMIN" && (
+                        <>
+                            <DatePicker
+                                picker="date"
+                                format="DD/MM/YYYY"
+                                style={{ width: 200, height: 40 }}
+                                onChange={(value) => { setSelectedDate(value) }}
+                                value={seletedDate}
+                                allowClear={true}
+                            />
+                            <SelectDropdown
+                                placeholder="Select User"
+                                options={userOptions}
+                                value={selectedUser as string}
+                                onChange={(value: any) => {
+                                    setSelectedUser(value)
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Unit is required"
+                                label=""
+                                disabled={false}
+                                isError={false}
+                            />
 
-            {/* Ant Design Table */}
+                            <SelectDropdown
+                                placeholder="Select Unit"
+                                options={[
+                                    { label: 'Medicine Name', value: 'medicineName' },
+                                    { label: 'Brand Name', value: 'brandName' },
+                                    { label: 'Product Type', value: 'productType' },
+                                    { label: 'Weightage', value: 'weightage' },
+                                    { label: 'Manufacturer', value: 'manufacturer' },
+                                    { label: 'Pack ', value: 'packSize' },
+                                    { label: 'Unit Type', value: 'unitType' },
+                                    { label: 'Price', value: 'price' },
+                                    { label: 'Route of Administration', value: 'routeOfAdministration' },
+                                    { label: 'Side Effects', value: 'sideEffects' },
+                                    { label: 'Barcode SKU', value: 'barcodeSKU' },
+                                    { label: 'NDC', value: 'ndc' },
+                                    { label: 'Schedule Type', value: 'scheduleType' },
+                                    { label: 'GST Percentage', value: 'gstPercentage' },
+                                    { label: 'Salt Composition', value: 'saltComposition' },
+                                ]}
+                                value={selectedField}
+                                onChange={(value: any) => {
+
+                                    setSelectedField(value)
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Unit is required"
+                                label=""
+                                disabled={false}
+                                isError={false}
+                            />
+                            <SearchComponent
+                                className='w-96'
+                                placeHolder={`Search ${selectedField}...`}
+                                suffixIcon={<SearchOutlined />}
+                                handleChange={handleSearch}
+                                value={searchValue}
+                                size="large"
+                            />
+                        </>
+                    )}
+                </div>
+            </div>
             <Table
                 columns={columns}
                 dataSource={medicines}
@@ -214,11 +316,11 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                     pageSizeOptions: ['10', '20', '50'],
                 }}
                 scroll={{
-                    y: tableHeight, // Maximum height of the table with vertical scrolling
-                    x: 'max-content', // Enables horizontal scrolling if the content overflows
+                    y: tableHeight,
+                    x: 'max-content',
                 }}
-                bordered // Adds border around the table
-                className="custom-table" // Custom class for additional styles
+                bordered
+                className="custom-table"
             />
 
 

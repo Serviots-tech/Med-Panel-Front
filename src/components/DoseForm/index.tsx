@@ -62,12 +62,12 @@ const DoseFormListPage: React.FC = () => {
         <div className="max-w-8xl m-12 p-5">
             <div className="flex items-center">
                 <button
-                    className="flex items-center text-blue-500 font-bold hover:text-blue-700"
+                    className="flex text-3xl items-center text-blue-500 font-bold hover:text-blue-700"
                     onClick={() => navigate(-1)} // Assuming you're using React Router's `navigate`
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 mr-2"
+                        className="h-8 w-8 mr-2"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"

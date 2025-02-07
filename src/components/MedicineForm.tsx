@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { MedicineFormInput } from '../types/medicine';
 import { Button, Col, Row, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
@@ -11,6 +11,8 @@ import SelectDropdown from './SelectDropdown';
 import { Image } from 'antd';
 import { configData } from '../helpers/config';
 import { Loader } from './Loader';
+import AutoCompleteField from './AutoCompleteField';
+import { getMedicines } from '../services/medicine';
 
 interface MedicineFormProps {
     formData: MedicineFormInput;
@@ -30,7 +32,38 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
     let isRemoving = false;
     const [hasError, setHasError] = useState(false);
+
+    const [saltCompositionOptions, setSaltCompotisionOptions] = useState([])
     console.log("🚀 ~ hasError:", hasError)
+
+    const debounceDelay = 300;
+    let debounceTimeout: number | undefined;
+
+    const handleSaltCompositionSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'saltComposition',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setSaltCompotisionOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.saltComposition,
+                            value: item.saltComposition,
+                        }))
+                    );
+                } catch (e) {
+                    setSaltCompotisionOptions([]);
+                }
+            } else {
+                setSaltCompotisionOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
 
     const propsUpload = {
         name: 'file',
@@ -70,7 +103,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             setFileList((prevList: any[]) => prevList.filter((item) => item.uid !== file.uid));
         },
     };
-    const handleChangeValue = (
+    const handleChangeValue = async (
         value: string | number | null | string[] | boolean,
         name: string,
         required: boolean,
@@ -87,13 +120,38 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             const _regex = new RegExp(regex);
             setHasError(!_regex.test(value));
         }
-        if (name === 'productType' && value !== 'drug') {
-            // Remove formError.barcodeSKU if it exists
-            if (formError.hasOwnProperty('barcodeSKU')) {
-                delete formError.barcodeSKU;
-                setFormError(formError)
-            }
+        // if (name === 'productType' && value !== 'drug') {
+        //     // Remove formError.barcodeSKU if it exists
+        //     if (formError.hasOwnProperty('barcodeSKU')) {
+        //         delete formError.barcodeSKU;
+        //         setFormError(formError)
+        //     }
+        // }
+        if (name === 'saltComposition') {
+            //     if(value){
+
+            //     try {
+            //         const query = {
+            //             targetField: 'saltComposition',
+            //             search: value
+            //         }
+            //         const res = await getMedicines(query)
+
+            //         setSaltCompotisionOptions(res?.data.map((item:any) => ({
+            //             label: item.saltComposition,
+            //             value: item.saltComposition,
+            //           })))
+            //     } catch (e: any) {
+
+            //         setSaltCompotisionOptions([])
+            //     }
+            // }
+            // else{
+            //     setSaltCompotisionOptions([])
+            // }
+            handleSaltCompositionSearch(value as string);
         }
+
 
         OnChange(value, name);
     };
@@ -461,7 +519,23 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                             />
                         </Col>
+                        <Col span={8}>
+                            <AutoCompleteField
+                                placeholder="Salt Composition"
+                                options={saltCompositionOptions}
+                                value={String(formData.saltComposition)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'saltComposition', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="saltComposition is required"
+                                label="Salt Composition"
+                                disabled={false}
+                                isError={formError.saltComposition}
 
+                            />
+                        </Col>
 
 
                     </Row>
