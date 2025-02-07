@@ -13,7 +13,12 @@ const MedicineListPage: React.FC = () => {
     const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
     const [medicines, setMedicines] = useState<Medicine[]>([]);
     const [doseFormData, setDoseFormData] = useState<any>()
+    const [searchValue, setSearchValue] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
 
+    const [selectedField,setSelectedField]= useState('medicineName')
+
+    const debounceDelay = 700;
     // const [loading, setLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,13 +27,27 @@ const MedicineListPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false)
 
 
+    useEffect(() => {
+        const handler = setTimeout(() => {
+          setDebouncedSearch(searchValue);
+        }, debounceDelay);
+      
+        return () => clearTimeout(handler);
+      }, [searchValue]);
+      
+
+    const handleSearch = (value: string) => {
+        setSearchValue(value);
+    };
     // Fetching the list of medicines
     const fetchMedicines = async () => {
         try {
             setIsLoading(true)
             const query = {
                 currentPage,
-                pageSize
+                pageSize,
+                search: searchValue,
+                targetField: 'medicineName'
             }
             const response = await getMedicines(query);
 
@@ -37,7 +56,9 @@ const MedicineListPage: React.FC = () => {
                 setCurrentPage(response?.pagination?.page)
                 setTotalRecords(response?.pagination?.totalRecords)
             } else {
-                console.error('API response does not contain a valid medicines array:', response);
+                setMedicines([]);
+                setCurrentPage(1)
+                setTotalRecords(0)
             }
         } catch (error) {
             console.error("Error fetching medicines:", error);
@@ -50,7 +71,7 @@ const MedicineListPage: React.FC = () => {
     // Fetch the medicines when the component is mounted or when page/pageSize changes
     useEffect(() => {
         fetchMedicines();
-    }, [currentPage, pageSize]);
+    }, [currentPage, pageSize, debouncedSearch]);
 
 
     // Handle opening the modal with medicine details
@@ -119,6 +140,10 @@ const MedicineListPage: React.FC = () => {
                     currentPage={currentPage}
                     totalRecords={totalRecords}
                     pagesize={pageSize}
+                    searchValue={searchValue}
+                    handleSearch={handleSearch}
+                    setSelectedField={setSelectedField}
+                    selectedField={selectedField}
                 />
 
                 {/* Modal for Medicine Details */}

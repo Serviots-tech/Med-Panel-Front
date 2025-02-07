@@ -24,6 +24,7 @@ type Props = {
   width?: any;
   rows?: number;
   isViewOnly?: boolean;
+  isLogin?:boolean
 };
 
 const InputField = (props: Props) => {
@@ -47,6 +48,7 @@ const InputField = (props: Props) => {
     width,
     rows,
     isViewOnly = false,
+    isLogin=false
   } = props;
 
   const [hasError, setHasError] = useState(false);
@@ -72,7 +74,7 @@ const InputField = (props: Props) => {
   return (
     <div className="input-field">
       {showLabel && label && (
-        <p className={`mb-1 text-gray-700 font-semibold ${isViewOnly ? 'mb-2' : ''}`}>
+        <p className={`mb-1 text-gray-700 font-semibold ${isViewOnly ? 'mb-2' : ''} ${isLogin ? 'text-2xl' : ''}`}>
           {label}{' '}
           {required && !isViewOnly && <span className="text-red-500">*</span>}
         </p>

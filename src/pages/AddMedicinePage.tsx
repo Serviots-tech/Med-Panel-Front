@@ -23,12 +23,8 @@ const AddMedicinePage: React.FC = () => {
     const [fileList, setFileList] = useState<any[]>([]);
     const [doseFormData, setDoseFormData] = useState<any>()
     const [isAddDoseFormModalOpen, setIsAddDoseFormModalOpen] = useState(false);
-    // const [doseFormToEdit, setDoseFormToEdit] = useState<any>(null);
-    // const [hasError, setHasError] = useState(false);
-    // const [documentName, setDocumentName] = useState('');
-    // const [isSubmitClick, setIsSubmitClick] = useState(false);
 
-    // Step 1: Define the state for form data
+
     const [formData, setFormData] = useState<MedicineFormInput>({
         medicineName: '',
         brandName: '',
@@ -45,7 +41,8 @@ const AddMedicinePage: React.FC = () => {
         barcodeSKU: '',
         ndc: '',
         scheduleType: '',
-        gstPercentage: 0
+        gstPercentage: 0,
+        saltComposition:''
     });
 
     const [formError, setFormError] = useState<any>({
@@ -204,13 +201,14 @@ const AddMedicinePage: React.FC = () => {
                     barcodeSKU: '',
                     ndc: '',
                     scheduleType: '',
-                    gstPercentage: 0
+                    gstPercentage: 0,
+                    saltComposition:''
                     // expiryDate: null,
                 });
 
-            } catch (error) {
+            } catch (error:any) {
                 console.error("Error submitting the form:", error);
-                toast.error('Error adding medicine');
+                toast.error(error?.response?.data?.message || "Fail to add/update Medicine,try again..");
             }
             finally {
                 setIsSubmitFormLoading(false)
@@ -229,8 +227,8 @@ const AddMedicinePage: React.FC = () => {
             </div>
             <div className="flex justify-between">
                 <button
-                    className="flex items-center text-blue-500 font-bold hover:text-blue-700"
-                    onClick={() => navigate(-1)} // Assuming you're using React Router's `navigate`
+                    className="flex text-3xl items-center text-blue-500 font-bold hover:text-blue-700"
+                    onClick={() => navigate(-1)}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

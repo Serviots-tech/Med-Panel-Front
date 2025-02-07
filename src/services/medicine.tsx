@@ -13,16 +13,20 @@ export const getMedicines = async (query: any) => {
             params: {
                 page: query?.currentPage,
                 limit: query?.pageSize,
+                targetField:query?.targetField,
+                search:query?.search
             },
+            headers: {
+				Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            }
         });
         return {
             data: response.data.data,
             pagination: response.data.pagination,
         };
     } catch (error) {
-        // Log the error and return a message or empty array
-        console.error("Error fetching medicines:", error);
-        throw new Error("Unable to fetch medicines");
+        // console.error("Error fetching medicines:", error);
+        // throw new Error("Unable to fetch medicines");
     }
 };
 
@@ -30,7 +34,13 @@ export const getMedicines = async (query: any) => {
 // Get a single medicine by ID
 export const getMedicineById = async (id: string) => {
     try {
-        const response = await axios.get(`${API_URL}/medicines/${id}`);
+        const response = await axios.get(`${API_URL}/medicines/${id}`,
+            {
+                headers: {
+                    Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+                }
+            }
+        );
         return response.data;
     } catch (error) {
         // Log the error and handle appropriately
@@ -45,7 +55,8 @@ export const createMedicine = async (medicineData: any) => {
         const response = await axios.post(`${API_URL}/medicines/add`, medicineData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
-            },
+				Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            }
         });
         return response.data;
     } catch (error: any) {
@@ -61,6 +72,7 @@ export const updateMedicine = async (id: string, medicineData: any) => {
         const response = await axios.put(`${API_URL}/medicines/${id}`, medicineData,{
             headers: {
                 'Content-Type': 'multipart/form-data',
+                Authorization: `bearer ${localStorage.getItem('accessToken')}`,
             },
         });
         console.log('Medicine updated successfully', response.data);

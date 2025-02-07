@@ -10,6 +10,9 @@ import { Medicine } from '../types/medicine';
 import { PermissionContext } from './AuthLayout';
 import AddUserModal from './AddUserModal';
 import './MedicineTable.css';
+import { SearchOutlined } from '@ant-design/icons';
+import SearchComponent from './SearchComponent';
+import SelectDropdown from './SelectDropdown';
 
 interface MedicineTableProps {
     medicines: Medicine[];
@@ -26,10 +29,14 @@ interface MedicineTableProps {
     currentPage: number;
     totalRecords: number;
     pagesize: number;
-    isLoading: boolean
+    isLoading: boolean;
+    searchValue: string
+    handleSearch: any;
+    setSelectedField: any;
+    selectedField: string;
 }
 
-const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
+const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setSelectedField, selectedField, searchValue, handleSearch, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
     const [medicineToDelete, setMedicineToDelete] = useState<Medicine | null>(null);
@@ -87,7 +94,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
     // Columns for the Ant Design Table
     const columns = [
         {
-            title: '#',
+            title: 'Sr. No.',
             dataIndex: 'index',
             key: 'index',
             render: (_text: string, _record: Medicine, index: number) => index + 1,
@@ -166,6 +173,44 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                 <div className="flex space-x-4">
                     {context.userRole === "ADMIN" && (
                         <>
+                            <SelectDropdown
+                                placeholder="Select Unit"
+                                options={[
+                                    { label: 'Medicine Name', value: 'medicineName' },
+                                    { label: 'Brand Name', value: 'brandName' },
+                                    { label: 'Product Type', value: 'productType' },
+                                    { label: 'Weightage', value: 'weightage' },
+                                    { label: 'Manufacturer', value: 'manufacturer' },
+                                    { label: 'Pack ', value: 'packSize' },
+                                    { label: 'Unit Type', value: 'unitType' },
+                                    { label: 'Price', value: 'price' },
+                                    { label: 'Route of Administration', value: 'routeOfAdministration' },
+                                    { label: 'Side Effects', value: 'sideEffects' },
+                                    { label: 'Barcode SKU', value: 'barcodeSKU' },
+                                    { label: 'NDC', value: 'ndc' },
+                                    { label: 'Schedule Type', value: 'scheduleType' },
+                                    { label: 'GST Percentage', value: 'gstPercentage' },
+                                    { label: 'Salt Composition', value: 'saltComposition' },
+                                  ]}
+                                value={selectedField}
+                                onChange={(value: any) => {
+
+                                    setSelectedField(value)
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Unit is required"
+                                label=""
+                                disabled={false}
+                                isError={false}
+                            />
+                            <SearchComponent
+                                placeHolder={`Search ${selectedField}...`}
+                                suffixIcon={<SearchOutlined />}
+                                handleChange={handleSearch}
+                                value={searchValue}
+                                size="large"
+                            />
                             <Button
                                 type="primary"
                                 onClick={() => {
@@ -199,7 +244,6 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
             </div>
 
 
-            {/* Ant Design Table */}
             <Table
                 columns={columns}
                 dataSource={medicines}
@@ -214,11 +258,11 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, onViewDetails,
                     pageSizeOptions: ['10', '20', '50'],
                 }}
                 scroll={{
-                    y: tableHeight, // Maximum height of the table with vertical scrolling
-                    x: 'max-content', // Enables horizontal scrolling if the content overflows
+                    y: tableHeight, 
+                    x: 'max-content', 
                 }}
-                bordered // Adds border around the table
-                className="custom-table" // Custom class for additional styles
+                bordered 
+                className="custom-table" 
             />
 
 
