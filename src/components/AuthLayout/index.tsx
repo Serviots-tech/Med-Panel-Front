@@ -12,6 +12,7 @@ export const PermissionContext = createContext<any>({
 
 
 export const AuthLayout = () => {
+	console.log("object")
 	const authpath = [
 		'/login'
 	];

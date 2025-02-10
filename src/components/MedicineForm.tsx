@@ -29,11 +29,18 @@ interface MedicineFormProps {
 
 export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormData, handleSubmit, formError, setFormError, isSubmitFormLoading, isLoading, doseFormData, fileList, setFileList }) => {
 
-
     let isRemoving = false;
     const [hasError, setHasError] = useState(false);
 
     const [saltCompositionOptions, setSaltCompotisionOptions] = useState([])
+    const [medicineNameOptions, setMedicineNameOptions] = useState([])
+    const [manufacturerOptions, setManufacturerOptions] = useState([])
+    const [marketedByOptions, setMarketedByOptions] = useState([])
+    const [brandNameOptions, setBrandNameOptions] = useState([])
+    const [weightageOptions, setWeightageOptions] = useState([])
+    const [saltStrengthOptions, setSaltStrengthOptions] = useState([])
+    const [flavorsOptions, setFlavorsOptions] = useState([])
+    const [offersOptions, setOffersOptions] = useState([])
     console.log("🚀 ~ hasError:", hasError)
 
     const debounceDelay = 300;
@@ -61,6 +68,212 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                 }
             } else {
                 setSaltCompotisionOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+
+    const handleMedicineNameSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'medicineName',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setMedicineNameOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.medicineName,
+                            value: item.medicineName,
+                        }))
+                    );
+                } catch (e) {
+                    setMedicineNameOptions([]);
+                }
+            } else {
+                setMedicineNameOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+
+    const handleManufacturerSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'manufacturer',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setManufacturerOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.manufacturer,
+                            value: item.manufacturer,
+                        }))
+                    );
+                } catch (e) {
+                    setManufacturerOptions([]);
+                }
+            } else {
+                setManufacturerOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+
+    const handleMarketedBySearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'marketedBy',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setMarketedByOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.marketedBy,
+                            value: item.marketedBy,
+                        }))
+                    );
+                } catch (e) {
+                    setMarketedByOptions([]);
+                }
+            } else {
+                setMarketedByOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+
+    const handleBrandNameSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'brandName',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setBrandNameOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.brandName,
+                            value: item.brandName,
+                        }))
+                    );
+                } catch (e) {
+                    setBrandNameOptions([]);
+                }
+            } else {
+                setBrandNameOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+    const handleWeightageSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'weightage',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setWeightageOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.weightage,
+                            value: item.weightage,
+                        }))
+                    );
+                } catch (e) {
+                    setWeightageOptions([]);
+                }
+            } else {
+                setWeightageOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+
+    const handlSaltStrengthSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'saltStrength',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setSaltStrengthOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.saltStrength,
+                            value: item.saltStrength,
+                        }))
+                    );
+                } catch (e) {
+                    setSaltStrengthOptions([]);
+                }
+            } else {
+                setSaltStrengthOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+
+    const handlFlavorsSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'flavors',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setFlavorsOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.flavors,
+                            value: item.flavors,
+                        }))
+                    );
+                } catch (e) {
+                    setFlavorsOptions([]);
+                }
+            } else {
+                setFlavorsOptions([]);
+            }
+        }, debounceDelay);
+    }, []);
+    const handlOffersSearch = useCallback((value: string) => {
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            if (value) {
+                try {
+                    const query = {
+                        targetField: 'offers',
+                        search: value,
+                    };
+                    const res = await getMedicines(query);
+                    setOffersOptions(
+                        res?.data.map((item: any) => ({
+                            label: item.offers,
+                            value: item.offers,
+                        }))
+                    );
+                } catch (e) {
+                    setOffersOptions([]);
+                }
+            } else {
+                setOffersOptions([]);
             }
         }, debounceDelay);
     }, []);
@@ -128,29 +341,46 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         //     }
         // }
         if (name === 'saltComposition') {
-            //     if(value){
 
-            //     try {
-            //         const query = {
-            //             targetField: 'saltComposition',
-            //             search: value
-            //         }
-            //         const res = await getMedicines(query)
-
-            //         setSaltCompotisionOptions(res?.data.map((item:any) => ({
-            //             label: item.saltComposition,
-            //             value: item.saltComposition,
-            //           })))
-            //     } catch (e: any) {
-
-            //         setSaltCompotisionOptions([])
-            //     }
-            // }
-            // else{
-            //     setSaltCompotisionOptions([])
-            // }
             handleSaltCompositionSearch(value as string);
         }
+        if (name === 'medicineName') {
+
+            handleMedicineNameSearch(value as string);
+        }
+        if (name === 'manufacturer') {
+
+            handleManufacturerSearch(value as string);
+        }
+        if (name === 'marketedBy') {
+
+            handleMarketedBySearch(value as string);
+        }
+
+        if (name === 'brandName') {
+
+            handleBrandNameSearch(value as string);
+        }
+
+        if (name === 'weightage') {
+
+            handleWeightageSearch(value as string);
+        }
+
+        if (name === 'saltStrength') {
+
+            handlSaltStrengthSearch(value as string);
+        }
+
+        if (name === 'flavors') {
+
+            handlFlavorsSearch(value as string);
+        }
+        if (name === 'offers') {
+
+            handlOffersSearch(value as string);
+        }
+        
 
 
         OnChange(value, name);
@@ -177,7 +407,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         <div>
             {isLoading ? (
                 <div className="spinner">
-                    {/* Replace with an actual spinner component */}
                     <Loader />
                 </div>
             ) : (
@@ -185,7 +414,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                     <Row gutter={[50, 20]} >
                         <Col span={8}>
-                            <InputField
+                            {/* <InputField
                                 name="medicineName"
                                 value={formData?.medicineName}
                                 label="Medicine Name"
@@ -202,10 +431,87 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 // regex="^\d{10}$"
                                 isError={formError.medicineName}
                                 disabled={false}
+                            /> */}
+                            <AutoCompleteField
+                                placeholder="Medicine Name"
+                                options={medicineNameOptions}
+                                value={String(formData.medicineName)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'medicineName', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Medicine name is required"
+                                label="Medicine Name"
+                                disabled={false}
+                                isError={formError.medicineName}
+
                             />
                         </Col>
+
                         <Col span={8}>
-                            <InputField
+                            {/* <InputField
+                                name="manufacturer"
+                                value={formData.manufacturer}
+                                label="Manufacturer"
+                                required={true}
+                                helperText="Manufacturer is required"
+                                placeholder="Manufacturer"
+                                onChange={(value) => handleChangeValue(value, 'manufacturer', true)}
+                                isError={formError.manufacturer}
+                                disabled={false}
+                            /> */}
+
+                            <AutoCompleteField
+                                placeholder="Manufacturer"
+                                options={manufacturerOptions}
+                                value={String(formData.manufacturer)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'manufacturer', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Manufacturer is required"
+                                label="Manufacturer"
+                                disabled={false}
+                                isError={formError.manufacturer}
+
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            {/* <InputField
+                                name="marketedBy"
+                                value={formData.marketedBy}
+                                label="Marketed By"
+                                required={false}
+                                helperText="Marketed By are required"
+                                placeholder="Marketed By"
+                                onChange={(value) => handleChangeValue(value, 'marketedBy', false)}
+                                isError={formError.marketedBy}
+                                disabled={false}
+                            /> */}
+
+                            <AutoCompleteField
+                                placeholder="Marketed By"
+                                options={marketedByOptions}
+                                value={String(formData.marketedBy)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'marketedBy', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Marketed By is required"
+                                label="Marketed By"
+                                disabled={false}
+                                isError={formError.marketedBy}
+
+                            />
+
+                        </Col>
+
+                        <Col span={8}>
+                            {/* <InputField
                                 name="brandName"
                                 value={formData?.brandName}
                                 label="Brand Name"
@@ -215,8 +521,26 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 onChange={(value) => handleChangeValue(value, 'brandName', true)}
                                 isError={formError.brandName}
                                 disabled={false}
+                            /> */}
+
+                            <AutoCompleteField
+                                placeholder="Brand Name"
+                                options={brandNameOptions}
+                                value={String(formData.brandName)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'brandName', true);
+                                }}
+                                size="large"
+                                required={false}
+                                helperText="Brand Name is required"
+                                label="Brand Name"
+                                disabled={false}
+                                isError={formError.brandName}
+
                             />
                         </Col>
+
+
                         <Col span={8}>
                             <SelectDropdown
                                 placeholder="Select Product Type"
@@ -247,64 +571,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            <p className="mb-1 text-gray-700 font-semibold">
-                                Image<span className="text-red-500"> *</span>
-                            </p>
-                            <Upload {...propsUpload}>
-                                <Button icon={<UploadOutlined />}>Upload</Button>
-                            </Upload>
-
-                            {(Array.isArray(formData?.image) && !fileList.length) && (
-                                <Row gutter={[16, 16]} justify="start" className='mt-10'>
-                                    {formData.image.map((url: string, index: number) => (
-                                        <Col span={6} key={index}>
-                                            <Image
-                                                src={`${configData?.s3baseURL || ''}${url}`} // Fallback for s3baseURL
-                                                style={{
-                                                    width: '100%', // Adjust width to fit the column
-                                                    height: 'auto', // Maintain aspect ratio
-                                                    objectFit: 'cover',
-                                                }}
-                                                preview={true}
-                                            />
-                                        </Col>
-                                    ))}
-                                </Row>
-                            )}
-
-                        </Col>
-
-                        <Col span={8}>
-                            <SelectDropdown
-                                placeholder="Select Unit"
-                                options={[
-                                    { label: 'Gm', value: 'GM' },
-                                    { label: 'Ml', value: 'ML' },
-                                    { label: 'Kit', value: 'KIT' },
-                                    { label: 'Kg', value: 'KG' },
-                                    { label: 'Piece', value: 'PIECE' },
-                                    { label: 'Tablet', value: 'TABLET' },
-                                    { label: 'Capsule', value: 'CAPSULE' },
-                                    { label: 'Ltr', value: 'LTR' },
-                                    { label: 'MDI', value: 'MDI' }
-
-                                ]}
-                                value={formData.unitType}
-                                onChange={(value: any) => {
-                                    handleChangeValue(value, 'unitType', true);
-                                }}
-                                size="large"
-                                required={true}
-                                helperText="Unit is required"
-
-                                label="Select Unit"
-                                disabled={false}
-                                isError={formError.unitType}
-                            />
-                        </Col>
-
-                        {/* Dosage Form */}
-                        <Col span={8}>
                             <SelectDropdown
                                 placeholder="Select Dosage Form"
                                 options={doseFormData?.map((item: any) => ({
@@ -322,36 +588,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             />
                         </Col>
 
-
-                        <Col span={8}>
-                            <InputField
-                                name="weightage"
-                                value={formData?.weightage}
-                                label="Weightage"
-                                required={true}
-                                helperText="Weightage is required"
-                                placeholder="Weightage"
-                                onChange={(value) => handleChangeValue(value, 'weightage', true)}
-                                isError={formError.weightage}
-                                disabled={false}
-                            />
-                        </Col>
-
-
-                        {/* Manufacturer */}
-                        <Col span={8}>
-                            <InputField
-                                name="manufacturer"
-                                value={formData.manufacturer}
-                                label="Manufacturer"
-                                required={true}
-                                helperText="Manufacturer is required"
-                                placeholder="Manufacturer"
-                                onChange={(value) => handleChangeValue(value, 'manufacturer', true)}
-                                isError={formError.manufacturer}
-                                disabled={false}
-                            />
-                        </Col>
 
                         {/* Pack Size */}
                         <Col span={8}>
@@ -383,6 +619,66 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
+                            {/* <InputField
+                                name="weightage"
+                                value={formData?.weightage}
+                                label="Weightage"
+                                required={true}
+                                helperText="Weightage is required"
+                                placeholder="Weightage"
+                                onChange={(value) => handleChangeValue(value, 'weightage', true)}
+                                isError={formError.weightage}
+                                disabled={false}
+                            /> */}
+
+                            <AutoCompleteField
+                                placeholder="Weightage"
+                                options={weightageOptions}
+                                value={String(formData.weightage)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'weightage', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Weightage is required"
+                                label="Weightage"
+                                disabled={false}
+                                isError={formError.weightage}
+
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            <SelectDropdown
+                                placeholder="Select Unit"
+                                options={[
+                                    { label: 'Gm', value: 'GM' },
+                                    { label: 'Ml', value: 'ML' },
+                                    { label: 'Kit', value: 'KIT' },
+                                    { label: 'Kg', value: 'KG' },
+                                    { label: 'Piece', value: 'PIECE' },
+                                    { label: 'Tablet', value: 'TABLET' },
+                                    { label: 'Capsule', value: 'CAPSULE' },
+                                    { label: 'Ltr', value: 'LTR' },
+                                    { label: 'MDI', value: 'MDI' }
+
+                                ]}
+                                value={formData.unitType}
+                                onChange={(value: any) => {
+                                    handleChangeValue(value, 'unitType', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Unit is required"
+
+                                label="Select Unit"
+                                disabled={false}
+                                isError={formError.unitType}
+                            />
+                        </Col>
+
+
+                        <Col span={8}>
                             <InputField
                                 name="price"
                                 value={formData.price}
@@ -394,6 +690,243 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 onChange={(value) => handleChangeValue(value, 'price', true)}
                                 isError={formError.price}
                                 disabled={false}
+                            />
+                        </Col>
+
+
+
+                        <Col span={8}>
+                            <SelectDropdown
+                                placeholder="Select Prescription Required"
+                                options={[
+                                    // { label: 'Select', value: 'Select' },
+                                    { label: 'YES', value: 'YES' },
+                                    { label: 'NO', value: 'NO' }
+                                ]}
+                                value={formData.prescriptionReq}
+                                onChange={(value) => handleChangeValue(value, 'prescriptionReq', true)}
+                                size="large"
+                                required={true}
+                                helperText={formError.prescriptionReq ? "Prescription Required is required" : ""}
+                                label="Prescription Required"
+                                disabled={false}
+                                isError={!!formError.prescriptionReq}
+                            />
+                        </Col>
+
+                        <Col span={8}>
+
+                            <SelectDropdown
+                                placeholder="Select schedule type"
+                                options={[
+                                    { label: 'H', value: 'H' },
+                                    { label: 'H1', value: 'H1' },
+                                    { label: 'G', value: 'G' },
+                                    { label: 'NRX', value: 'NRX' },
+                                    { label: 'TB', value: 'TB' },
+                                    { label: 'NON_SCHEDULE', value: 'NON_SCHEDULE' }
+                                ]}
+                                value={formData.scheduleType}
+                                onChange={(value: any) => {
+                                    handleChangeValue(value, 'scheduleType', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Schedule Type is required"
+                                label="Schedule Type"
+                                disabled={false}
+                                isError={formError.scheduleType}
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            <InputField
+                                name="barcodeSKU"
+                                value={formData.barcodeSKU || ''}
+                                label="Barcode SKU (Unique) or GTIN"
+                                required={false}
+                                helperText={formError.barcodeSKU ? "Barcode SKU is required" : ""}
+                                placeholder="Barcode SKU (Unique)"
+                                onChange={(value) => handleChangeValue(value, 'barcodeSKU', false)}
+                                isError={!!formError.barcodeSKU}
+                                disabled={false}
+                            />
+                        </Col>
+
+
+                        <Col span={8}>
+                            <InputField
+                                name="hsnCode"
+                                value={formData.hsnCode}
+                                label="HSN Code"
+                                required={false}
+                                helperText="HSN code are required"
+                                placeholder="HSN Code"
+                                onChange={(value) => handleChangeValue(value, 'hsnCode', false)}
+                                isError={formError.hsnCode}
+                                disabled={false}
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            <AutoCompleteField
+                                placeholder="Salt Composition"
+                                options={saltCompositionOptions}
+                                value={String(formData.saltComposition)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'saltComposition', true);
+                                }}
+                                size="large"
+                                required={false}
+                                helperText="Salt Composition is required"
+                                label="Salt Composition"
+                                disabled={false}
+                                isError={formError.saltComposition}
+
+                            />
+                        </Col>
+
+
+                        <Col span={8}>
+                            {/* <InputField
+                                name="saltStrength"
+                                value={formData.saltStrength}
+                                label="Salt Strength"
+                                required={false}
+                                helperText="Salt strength are required"
+                                placeholder="Salt strength"
+                                onChange={(value) => handleChangeValue(value, 'saltStrength', false)}
+                                isError={formError.saltStrength}
+                                disabled={false}
+                            /> */}
+                            <AutoCompleteField
+                                placeholder="Salt strength"
+                                options={saltStrengthOptions}
+                                value={String(formData.saltStrength)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'saltStrength', true);
+                                }}
+                                size="large"
+                                required={false}
+                                helperText="Salt strength is required"
+                                label="Salt Strength"
+                                disabled={false}
+                                isError={formError.saltStrength}
+
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            <SelectDropdown
+                                placeholder="Select GST Percentage"
+                                options={Array.from({ length: 29 }, (_, index) => ({
+                                    label: `${index}%`,
+                                    value: index
+                                }))}
+                                value={String(formData.gstPercentage)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'gstPercentage', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="GST percentage is required"
+                                label="GST Percentage"
+                                disabled={false}
+                                isError={formError.gstPercentage}
+
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            {/* <InputField
+                                name="flavors"
+                                value={formData.flavors}
+                                label="Flavors"
+                                required={false}
+                                helperText="Flavors are required"
+                                placeholder="Flavors"
+                                onChange={(value) => handleChangeValue(value, 'flavors', false)}
+                                isError={formError.flavors}
+                                disabled={false}
+                            /> */}
+
+                            <AutoCompleteField
+                                placeholder="Flavors"
+                                options={flavorsOptions}
+                                value={String(formData.flavors)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'flavors', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Flavors is required"
+                                label="Flavors"
+                                disabled={false}
+                                isError={formError.flavors}
+
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            {/* <InputField
+                                name="offers"
+                                value={formData.offers}
+                                label="Offers"
+                                required={false}
+                                helperText="Offers are required"
+                                placeholder="Offers"
+                                onChange={(value) => handleChangeValue(value, 'offers', false)}
+                                isError={formError.offers}
+                                disabled={false}
+                            /> */}
+
+                            <AutoCompleteField
+                                placeholder="Offers"
+                                options={offersOptions}
+                                value={String(formData.offers)}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'offers', true);
+                                }}
+                                size="large"
+                                required={false}
+                                helperText="Offers is required"
+                                label="Offers"
+                                disabled={false}
+                                isError={formError.offers}
+
+                            />
+                        </Col>
+
+                        <Col span={8}>
+                            <SelectDropdown
+                                placeholder="Sub Category Type"
+                                options={[
+                                    { label: 'Mother Care', value: 'MOTHER_CARE' },
+                                    { label: 'Protein Powders & Drinks', value: 'PROTEIN_POWDERS_DRINKS' },
+                                    { label: 'Vitamins & Supplements', value: 'VITAMINS_SUPPLEMENTS' },
+                                    { label: 'Sexual Health Supplements', value: 'SEXUAL_HEALTH_SUPPLEMENTS' },
+                                    { label: 'Feminine Hygiene', value: 'FEMININE_HYGIENE' },
+                                    { label: 'Grooming', value: 'GROOMING' },
+                                    { label: 'Hair Care', value: 'HAIR_CARE' },
+                                    { label: 'Oral Care', value: 'ORAL_CARE' },
+                                    { label: 'Fragrances', value: 'FRAGRANCES' },
+                                    { label: 'Pet Product', value: 'PET_PRODUCT' },
+                                    { label: 'Cleaning Essentials', value: 'CLEANING_ESSENTIALS' },
+                                    { label: 'Food & Drink', value: 'FOOD_DRINK' },
+                                    { label: 'Diapers & Wipes', value: 'DIAPERS_WIPES' },
+                                    { label: 'Baby Product', value: 'BABY_PRODUCT' },
+                                    { label: 'Skin Care', value: 'SKIN_CARE' },
+                                ]}
+                                value={formData.subCategory}
+                                onChange={(value: any) => {
+                                    handleChangeValue(value, 'subCategory', true);
+                                }}
+                                size="large"
+                                required={true}
+                                helperText="Sub Category is required"
+                                label="Sub Category"
+                                disabled={false}
+                                isError={formError.subCategory}
                             />
                         </Col>
 
@@ -426,41 +959,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             />
                         </Col>
 
-                        {/* Contraindications */}
-
-                        <Col span={8}>
-                            <SelectDropdown
-                                placeholder="Select Prescription Required"
-                                options={[
-                                    // { label: 'Select', value: 'Select' },
-                                    { label: 'YES', value: 'YES' },
-                                    { label: 'NO', value: 'NO' }
-                                ]}
-                                value={formData.prescriptionReq}
-                                onChange={(value) => handleChangeValue(value, 'prescriptionReq', true)}
-                                size="large"
-                                required={true}
-                                helperText={formError.prescriptionReq ? "Prescription Required is required" : ""}
-                                label="Prescription Required"
-                                disabled={false}
-                                isError={!!formError.prescriptionReq}
-                            />
-                        </Col>
-
-                        <Col span={8}>
-                            <InputField
-                                name="barcodeSKU"
-                                value={formData.barcodeSKU || ''}
-                                label="Barcode SKU (Unique) or GTIN"
-                                required={false}
-                                helperText={formError.barcodeSKU ? "Barcode SKU is required" : ""}
-                                placeholder="Barcode SKU (Unique)"
-                                onChange={(value) => handleChangeValue(value, 'barcodeSKU', false)}
-                                isError={!!formError.barcodeSKU}
-                                disabled={false}
-                            />
-                        </Col>
-
                         <Col span={8}>
                             <InputField
                                 name="ndc"
@@ -476,79 +974,39 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
+                            <p className="mb-1 text-gray-700 font-semibold">
+                                Image<span className="text-red-500"> *</span>
+                            </p>
+                            <Upload {...propsUpload}>
+                                <Button icon={<UploadOutlined />}>Upload</Button>
+                            </Upload>
 
-                            <SelectDropdown
-                                placeholder="Select schedule type"
-                                options={[
-                                    { label: 'H', value: 'H' },
-                                    { label: 'H1', value: 'H1' },
-                                    { label: 'G', value: 'G' },
-                                    { label: 'NRX', value: 'NRX' },
-                                    { label: 'TB', value: 'TB' },
-                                    { label: 'NON_SCHEDULE', value: 'NON_SCHEDULE' }
-                                ]}
-                                value={formData.scheduleType}
-                                onChange={(value: any) => {
-                                    handleChangeValue(value, 'scheduleType', true);
-                                }}
-                                size="large"
-                                required={true}
-                                helperText="Schedule Type is required"
-                                label="Schedule Type"
-                                disabled={false}
-                                isError={formError.scheduleType}
-                            />
+                            {(Array.isArray(formData?.image) && !fileList.length) && (
+                                <Row gutter={[16, 16]} justify="start" className='mt-10'>
+                                    {formData.image.map((url: string, index: number) => (
+                                        <Col span={6} key={index}>
+                                            <Image
+                                                src={`${configData?.s3baseURL || ''}${url}`} // Fallback for s3baseURL
+                                                style={{
+                                                    width: '100%', // Adjust width to fit the column
+                                                    height: 'auto', // Maintain aspect ratio
+                                                    objectFit: 'cover',
+                                                }}
+                                                preview={true}
+                                            />
+                                        </Col>
+                                    ))}
+                                </Row>
+                            )}
+
                         </Col>
-                        <Col span={8}>
-                            <SelectDropdown
-                                placeholder="Select GST Percentage"
-                                options={Array.from({ length: 29 }, (_, index) => ({
-                                    label: `${index}%`,
-                                    value: index
-                                }))}
-                                value={String(formData.gstPercentage)}
-                                onChange={(value) => {
-                                    handleChangeValue(value, 'gstPercentage', true);
-                                }}
-                                size="large"
-                                required={true}
-                                helperText="GST percentage is required"
-                                label="GST Percentage"
-                                disabled={false}
-                                isError={formError.gstPercentage}
-
-                            />
-                        </Col>
-                        <Col span={8}>
-                            <AutoCompleteField
-                                placeholder="Salt Composition"
-                                options={saltCompositionOptions}
-                                value={String(formData.saltComposition)}
-                                onChange={(value) => {
-                                    handleChangeValue(value, 'saltComposition', true);
-                                }}
-                                size="large"
-                                required={true}
-                                helperText="saltComposition is required"
-                                label="Salt Composition"
-                                disabled={false}
-                                isError={formError.saltComposition}
-
-                            />
-                        </Col>
-
-
                     </Row>
 
-
-                    {/* </div> */}
                     <div className="flex justify-center">
                         <Button
-                            // htmlType="submit"
                             type='primary'
                             onClick={handleSubmit}
                             loading={isSubmitFormLoading}
-                        // className="bg-blue-500 text-white p-2 rounded-md w-full max-w-xs hover:bg-blue-600"
                         >
                             {formData.id ? 'Update' : 'Add'} Medicine
                         </Button>

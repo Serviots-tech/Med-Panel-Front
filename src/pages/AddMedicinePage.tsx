@@ -40,10 +40,18 @@ const AddMedicinePage: React.FC = () => {
         prescriptionReq: '',
         barcodeSKU: '',
         ndc: '',
+        marketedBy: '',
         scheduleType: '',
         gstPercentage: 0,
-        saltComposition:''
+        saltComposition: '',
+        hsnCode: '',
+        saltStrength: "",
+        flavors: '',
+        offers: '',
+        subCategory: '',
     });
+
+
 
     const [formError, setFormError] = useState<any>({
         medicineName: false,
@@ -59,6 +67,8 @@ const AddMedicinePage: React.FC = () => {
         scheduleType: false,
         gstPercentage: false,
         weightage: false,
+        flavors:false,
+        subCategory:false
         // barcodeSKU:false
         // expiryDate: null,
     });
@@ -104,7 +114,7 @@ const AddMedicinePage: React.FC = () => {
             setDoseFormData(doseFoemData?.data?.data?.data?.data)
         }
         catch (error: any) {
-            toast.error(error?.msg || "Fail to fetch dose form")
+            toast.error(error?.response?.data?.message || "Fail to fetch dose form")
         }
     }
 
@@ -114,21 +124,17 @@ const AddMedicinePage: React.FC = () => {
         // e.preventDefault();
         const updatedFormError = { ...formError };
 
-        // if (formData.productType !== 'Drug') {
-        //     updatedFormError.barcodeSKU = false;
-        // } else {
-        //     delete updatedFormError.barcodeSKU; // Remove barcodeSKU from formError
-        // }
+        if (formData.saltComposition) {
+            updatedFormError.saltStrength = true;
+        } else {
+            delete updatedFormError.saltStrength; 
+        }
         const checkFormError = validateFormData(
             {
                 ...formData,
             },
             updatedFormError
         );
-        // checkFormError = {
-        // 	...checkFormError,
-        // 	employeeTPIN: !/^\d{10}$/.test(taxationDetails.employeeTPIN),
-        // };
 
         setFormError(checkFormError);
 
@@ -202,13 +208,18 @@ const AddMedicinePage: React.FC = () => {
                     ndc: '',
                     scheduleType: '',
                     gstPercentage: 0,
-                    saltComposition:''
+                    saltComposition: '',
+                    marketedBy: '',
+                    hsnCode: '',
+                    saltStrength: "",
+                    flavors: '',
+                    offers: '',
+                    subCategory: '',
                     // expiryDate: null,
                 });
 
-            } catch (error:any) {
+            } catch (error: any) {
                 console.log("🚀 ~ handleSubmit ~ error:", error)
-                // console.error("Error submitting the form:", error);
                 toast.error(error?.response?.data?.message || "Fail to add/update Medicine,try again..");
             }
             finally {

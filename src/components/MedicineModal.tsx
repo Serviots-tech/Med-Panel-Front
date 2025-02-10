@@ -5,6 +5,7 @@ import { Medicine } from '../types/medicine';
 import { Modal, Row, Col, Typography, Divider } from 'antd';
 import { Image } from 'antd';
 import { configData } from '../helpers/config';
+import { getCategoryLabel, getPackagingLabel, PackagingType, ProductCategory } from '../helpers/utils';
 
 const { Text } = Typography;
 
@@ -79,7 +80,8 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                     </Col>
                     <Col span={8}>
                         <Text strong>Pack Size :- </Text>
-                        <Text>{medicine.packSize}</Text>
+                        <Text>{getPackagingLabel(medicine.packSize as PackagingType)}
+                        </Text>
                     </Col>
                 </Row>
 
@@ -126,7 +128,31 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                         <Text strong>Unit :- </Text>
                         <Text>{medicine.unitType}</Text>
                     </Col>
+                    <Col span={8}>
+                        <Text strong>Flavors :- </Text>
+                        <Text>{medicine.flavors}</Text>
+                    </Col>
+                    <Col span={8}>
+                        <Text strong>Offers :- </Text>
+                        <Text>{medicine.offers}</Text>
+                    </Col>
 
+                </Row>
+                <Divider />
+                <Row gutter={24}>
+
+                    <Col span={8}>
+                        <Text strong>Sub Category :- </Text>
+                        <Text>{getCategoryLabel(medicine.subCategory as ProductCategory)}</Text>
+                    </Col>
+                    <Col span={8}>
+                        <Text strong>Salt Strenght  :- </Text>
+                        <Text>{medicine.saltStrength}</Text>
+                    </Col>
+                    <Col span={8}>
+                        <Text strong>Salt Composition:- </Text>
+                        <Text>{medicine.saltComposition}</Text>
+                    </Col>
 
                 </Row>
                 <Divider />
