@@ -217,8 +217,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                 </div>
 
             </div>
-            <div className="flex justify-between mb-4">
-                {context.userRole === "ADMIN" && (<div>
+            <div className="flex justify-between mb-4"><div>
                     <Button
                         type="primary"
                         onClick={() => {
@@ -231,9 +230,10 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                     >
                         clear
                     </Button>
-                </div>)}
+                </div>
 
                 <div className="flex space-x-4">
+                    <>
                     {context.userRole === "ADMIN" && (
                         <>
                             <DatePicker
@@ -258,6 +258,8 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                                 disabled={false}
                                 isError={false}
                             />
+                            </>
+                            )}
 
                             <SelectDropdown
                                 placeholder="Select Unit"
@@ -298,8 +300,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                                 value={searchValue}
                                 size="large"
                             />
-                        </>
-                    )}
+                    </>
                 </div>
             </div>
             <Table
