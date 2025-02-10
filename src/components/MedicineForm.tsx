@@ -901,6 +901,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             <SelectDropdown
                                 placeholder="Sub Category Type"
                                 options={[
+                                    {label:'Select Value',value:""},
                                     { label: 'Mother Care', value: 'MOTHER_CARE' },
                                     { label: 'Protein Powders & Drinks', value: 'PROTEIN_POWDERS_DRINKS' },
                                     { label: 'Vitamins & Supplements', value: 'VITAMINS_SUPPLEMENTS' },
@@ -917,12 +918,12 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                     { label: 'Baby Product', value: 'BABY_PRODUCT' },
                                     { label: 'Skin Care', value: 'SKIN_CARE' },
                                 ]}
-                                value={formData.subCategory}
+                                value={formData.subCategory as string}
                                 onChange={(value: any) => {
                                     handleChangeValue(value, 'subCategory', true);
                                 }}
                                 size="large"
-                                required={true}
+                                required={false}
                                 helperText="Sub Category is required"
                                 label="Sub Category"
                                 disabled={false}

@@ -38,7 +38,7 @@ export interface Medicine {
     saltStrength: string;
     flavors: string;
     offers: string;
-    subCategory:string
+    subCategory:string 
     // expiryDate: Date | null;
 }
 
@@ -68,7 +68,7 @@ export interface MedicineFormInput {
     saltStrength: string;
     flavors: string;
     offers: string;
-    subCategory:string
+    subCategory:string 
 
     // expiryDate: Date | null;
 }

@@ -68,7 +68,7 @@ const AddMedicinePage: React.FC = () => {
         gstPercentage: false,
         weightage: false,
         flavors:false,
-        subCategory:false
+        // subCategory:false
         // barcodeSKU:false
         // expiryDate: null,
     });
@@ -145,14 +145,13 @@ const AddMedicinePage: React.FC = () => {
 
             try {
 
-                const finalData = new FormData();
+                const finalData:any = new FormData();
 
                 setIsSubmitFormLoading(true)
                 // Ensure price is a valid number (float)
                 if (formData?.price) {
                     formData.price = parseFloat(formData.price.toString()); // Convert string to float
                 }
-
                 // Handle any invalid price (NaN or non-numeric)
                 if (isNaN(formData?.price)) {
                     formData.price = 0;
@@ -175,7 +174,7 @@ const AddMedicinePage: React.FC = () => {
 
                 // Remove the `id` field from the form data if it's included
                 const { id } = formData;
-
+               
                 if (id) {
                     // Update existing medicine
                     await updateMedicine(id, finalData);
