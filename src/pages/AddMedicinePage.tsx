@@ -89,7 +89,7 @@ const AddMedicinePage: React.FC = () => {
                     setLoading(true); // Start loading
                     const response = await getMedicineById(id);
                     if (response) {
-                        setFormData(response?.data);
+                        setFormData({...response?.data,subCategory:response?.data?.subCategory ?? "", doseFormId: response?.data?.doseFormId ?? ""});
                     }
                 } catch (e: any) {
                     console.log("🚀 ~ fetchMedicine ~ e:", e)

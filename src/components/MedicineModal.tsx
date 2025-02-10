@@ -20,7 +20,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
 
     const getDoseFormName = (doseFormId: string) => {
         const matchedItem = doseFormData.find((item: any) => item.id === doseFormId);
-        return matchedItem ? matchedItem.name : "Unknown";
+        return matchedItem ? matchedItem.name : "";
     };
 
     return (
