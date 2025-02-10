@@ -29,10 +29,16 @@ export interface Medicine {
     prescriptionReq: string;
     barcodeSKU: string;
     ndc: string;
+    marketedBy: string;
     image?: string;
     scheduleType: string;
     gstPercentage: number;
-    saltComposition:string
+    saltComposition: string;
+    hsnCode: string;
+    saltStrength: string;
+    flavors: string;
+    offers: string;
+    subCategory:string
     // expiryDate: Date | null;
 }
 
@@ -50,13 +56,19 @@ export interface MedicineFormInput {
     price: Float;
     routeOfAdministration: string;
     sideEffects: string;
+    marketedBy: string;
     prescriptionReq: string;
     barcodeSKU: string;
     ndc: string;
     image?: string;
     scheduleType: string;
     gstPercentage: number;
-    saltComposition:string
+    saltComposition: string;
+    hsnCode: string
+    saltStrength: string;
+    flavors: string;
+    offers: string;
+    subCategory:string
 
     // expiryDate: Date | null;
 }
@@ -64,16 +76,16 @@ export interface MedicineFormInput {
 export type CustomSize = 'small' | 'middle' | 'large' | undefined;
 
 export type TableSorter = {
-	column: any;
-	columnKey: string;
-	field: string;
-	order: string;
+    column: any;
+    columnKey: string;
+    field: string;
+    order: string;
 };
 
 export type TablePagination = {
-	current: number;
-	pageSize: number;
-	PageSizeOptions: number[];
-	showSizeChanger: boolean;
-	total: number;
+    current: number;
+    pageSize: number;
+    PageSizeOptions: number[];
+    showSizeChanger: boolean;
+    total: number;
 };

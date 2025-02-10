@@ -47,9 +47,9 @@ const LoginComponent: React.FC = () => {
 
         toast.success("User logged in successfully");
       }
-      catch (e: any) {
-        console.log("🚀 ~ handleSubmit ~ e:", e)
-        toast.error("fail to login, check your credentials")
+      catch (error: any) {
+        // console.log("🚀 ~ handleSubmit ~ e:", e)
+        toast.error(error?.response?.data?.message  ||"fail to login, check your credentials")
       }
       finally {
         setLoading(false);
@@ -138,6 +138,7 @@ const LoginComponent: React.FC = () => {
             isError={formError.password}
             disabled={false}
             isLogin={true}
+            type='password'
           />
         </div>
         <div className="flex items-center justify-between mb-8">

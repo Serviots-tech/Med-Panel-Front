@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { configData } from './helpers/config';
+import { toast } from 'react-toastify';
 
 const endPoint = configData.baseURL;
 
@@ -43,3 +44,24 @@ export const deleteApiWithData = (url: string, apiData?: any) => {
 		...apiConfig(),
 	});
 };
+
+axios.interceptors.response.use(
+	(response) => {
+		// Check if the response contains the new access token in headers
+		// const newAccessToken = response.headers['x-new-access-token'];
+		// if (newAccessToken) {
+		// 	storeData('accessToke', newAccessToken)
+		// }
+		return response;
+	},
+	(error: any) => {
+		console.log("🚀 ~ error:", error)
+		if (error.response && error.response.status === 401) {
+			console.log('Unauthorized: Invalid or expired token.');
+			toast.error('Unauthorized: Invalid or expired token.')
+			localStorage.removeItem('accessToken')
+			window.location.href = '/login';
+		}
+		return Promise.reject(error);
+	}
+);

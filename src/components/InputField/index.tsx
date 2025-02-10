@@ -24,7 +24,7 @@ type Props = {
   width?: any;
   rows?: number;
   isViewOnly?: boolean;
-  isLogin?:boolean
+  isLogin?:boolean;
 };
 
 const InputField = (props: Props) => {
@@ -48,7 +48,7 @@ const InputField = (props: Props) => {
     width,
     rows,
     isViewOnly = false,
-    isLogin=false
+    isLogin=false,
   } = props;
 
   const [hasError, setHasError] = useState(false);
