@@ -573,14 +573,17 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         <Col span={8}>
                             <SelectDropdown
                                 placeholder="Select Dosage Form"
-                                options={doseFormData?.map((item: any) => ({
-                                    label: item.name,
-                                    value: item.id
-                                }))}
+                                options = {[
+                                    { label: "Select Value", value: "" }, 
+                                    ...doseFormData?.map((item: any) => ({
+                                        label: item.name,
+                                        value: item.id
+                                    })) || []
+                                ]}
                                 value={formData.doseFormId}
                                 onChange={(value) => handleChangeValue(value, 'doseFormId', true)}
                                 size="large"
-                                required={true}
+                                required={false}
                                 helperText="Dosage form is required"
                                 label="Dosage Form"
                                 disabled={false}
@@ -858,7 +861,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                     handleChangeValue(value, 'flavors', true);
                                 }}
                                 size="large"
-                                required={true}
+                                required={false}
                                 helperText="Flavors is required"
                                 label="Flavors"
                                 disabled={false}
