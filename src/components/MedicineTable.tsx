@@ -218,7 +218,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
 
             </div>
             <div className="flex justify-between mb-4">
-                <div>
+                {context.userRole === "ADMIN" && (<div>
                     <Button
                         type="primary"
                         onClick={() => {
@@ -231,7 +231,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                     >
                         clear
                     </Button>
-                </div>
+                </div>)}
 
                 <div className="flex space-x-4">
                     {context.userRole === "ADMIN" && (
