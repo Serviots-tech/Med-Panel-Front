@@ -81,7 +81,12 @@ export const updateMedicine = async (id: string, medicineData: any) => {
 // Delete a medicine
 export const deleteMedicine = async (id: string): Promise<boolean> => {
     try {
-        const response = await axios.delete(`${API_URL}/medicines/${id}`);
+        const response = await axios.delete(`${API_URL}/medicines/${id}`,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            },
+        });
         if (response.status === 200) {
             return true;
         }
