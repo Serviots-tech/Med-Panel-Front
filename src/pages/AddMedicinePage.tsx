@@ -57,7 +57,7 @@ const AddMedicinePage: React.FC = () => {
         medicineName: false,
         // brandName: false,
         productType: false,
-        doseFormId: false,
+        // doseFormId: false,
         strength: false,
         manufacturer: false,
         packSize: false,
@@ -67,7 +67,7 @@ const AddMedicinePage: React.FC = () => {
         scheduleType: false,
         gstPercentage: false,
         weightage: false,
-        flavors:false,
+        // flavors:false,
         // subCategory:false
         // barcodeSKU:false
         // expiryDate: null,
