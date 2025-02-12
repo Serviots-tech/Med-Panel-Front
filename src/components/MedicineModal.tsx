@@ -155,10 +155,11 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                     </Col>
 
                 </Row>
-                <Divider />
 
-                <Row gutter={24}>
-                    {medicine?.image?.length && (
+                {medicine?.image?.length ? (
+                    <>
+                    <Divider />
+                    <Row gutter={24}>
                         <Col span={24}>
                             <Text strong>Image:</Text>
                             <Row gutter={16}>
@@ -173,8 +174,9 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                                 ))}
                             </Row>
                         </Col>
-                    )}
-                </Row>
+                    </Row>
+                    </>
+                ) : <></>}
             </div>
         </Modal>
     );

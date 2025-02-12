@@ -979,7 +979,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                         <Col span={8}>
                             <p className="mb-1 text-gray-700 font-semibold">
-                                Image<span className="text-red-500"> *</span>
+                                Image
                             </p>
                             <Upload {...propsUpload}>
                                 <Button icon={<UploadOutlined />}>Upload</Button>

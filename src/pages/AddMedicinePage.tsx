@@ -157,10 +157,10 @@ const AddMedicinePage: React.FC = () => {
                     formData.price = 0;
                 }
 
-                if (!(formData?.image as any)?.length && fileList.length < 3) {
-                    toast.error("upload minimum 3 images")
-                    return
-                }
+                // if (!(formData?.image as any)?.length && fileList.length < 3) {
+                //     toast.error("upload minimum 3 images")
+                //     return
+                // }
 
                 for (const [key, value] of Object.entries(formData)) {
                     finalData.append(key, value);
