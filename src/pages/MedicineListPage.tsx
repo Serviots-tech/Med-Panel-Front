@@ -18,7 +18,8 @@ const MedicineListPage: React.FC = () => {
 
     const [selectedField,setSelectedField]= useState('medicineName')
     const [selectedUser,setSelectedUser]= useState(null)
-    const [selectDate,setSelectedDate]=useState(dayjs(new Date()))
+    // const [selectDate,setSelectedDate]=useState(dayjs())
+    const [selectDate, setSelectedDate] = useState(dayjs().startOf("day"));
     const [userOptions, setUserOptions] = useState<any>()
 
     const debounceDelay = 700;
