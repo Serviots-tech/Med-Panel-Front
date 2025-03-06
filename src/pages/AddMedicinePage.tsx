@@ -43,21 +43,20 @@ const AddMedicinePage: React.FC = () => {
         marketedBy: '',
         scheduleType: '',
         gstPercentage: 0,
-        saltComposition: '',
+        saltComposition: [{
+            name: '',
+            strength: ''
+        }],
         hsnCode: '',
-        saltStrength: "",
         flavors: '',
         offers: '',
         subCategory: '',
     });
 
 
-
     const [formError, setFormError] = useState<any>({
         medicineName: false,
-        // brandName: false,
         productType: false,
-        // doseFormId: false,
         strength: false,
         manufacturer: false,
         packSize: false,
@@ -67,42 +66,79 @@ const AddMedicinePage: React.FC = () => {
         scheduleType: false,
         gstPercentage: false,
         weightage: false,
-        // flavors:false,
-        // subCategory:false
-        // barcodeSKU:false
-        // expiryDate: null,
     });
 
     const [isSubmitFormLoading, setIsSubmitFormLoading] = useState(false)
 
 
     // Store validation errors
-    // const [errors, setErrors] = useState<any>({});
+
     const [loading, setLoading] = useState<boolean>(false);
 
     // Fetch existing medicine data if id is provided
+    // useEffect(() => {
+    //     if (id) {
+    //         const fetchMedicine = async () => {
+    //             try {
+    //                 setLoading(true); 
+    //                 const response = await getMedicineById(id);
+    //                    // Parse saltComposition if it exists and is an array
+    //                    const parsedSaltComposition = Array.isArray(data?.saltComposition)
+    //                    ? data.saltComposition.map((item: string) => JSON.parse(item))
+    //                    : [];
+
+    //                 if (response) {
+    //                     setFormData({ ...response?.data, subCategory: response?.data?.subCategory ?? "", doseFormId: response?.data?.doseFormId ?? "" });
+    //                 }
+    //             } catch (e: any) {
+    //                 toast.error("some thing went wrong ,login again")
+
+    //             }
+    //             finally {
+    //                 setLoading(false); 
+    //             }
+    //         };
+    //         fetchMedicine();
+    //     }
+    // }, [id]);
+
     useEffect(() => {
         if (id) {
             const fetchMedicine = async () => {
-
                 try {
-                    setLoading(true); // Start loading
+                    setLoading(true);
                     const response = await getMedicineById(id);
-                    if (response) {
-                        setFormData({...response?.data,subCategory:response?.data?.subCategory ?? "", doseFormId: response?.data?.doseFormId ?? ""});
+                    if (response?.data) {
+                        const data = response.data;
+
+                        const parsedSaltComposition = Array.isArray(data?.saltComposition)
+                            ? data.saltComposition.map((item: string) => {
+                                try {
+                                    return JSON.parse(item); // Convert JSON string to object
+                                } catch (error) {
+                                    console.error("Error parsing saltComposition item:", error);
+                                    return item; // If parsing fails, keep the original value
+                                }
+                            })
+                            : [];
+
+                        setFormData({
+                            ...data,
+                            saltComposition: parsedSaltComposition, // ✅ Use the parsed array
+                            subCategory: data?.subCategory ?? "",
+                            doseFormId: data?.doseFormId ?? "",
+                        });
                     }
                 } catch (e: any) {
-                    console.log("🚀 ~ fetchMedicine ~ e:", e)
-                    toast.error("some thing went wrong ,login again")
-
-                }
-                finally {
-                    setLoading(false); // Stop loading
+                    toast.error("Something went wrong, please login again.");
+                } finally {
+                    setLoading(false);
                 }
             };
             fetchMedicine();
         }
     }, [id]);
+
 
     useEffect(() => {
         fetchDoseForms()
@@ -120,15 +156,10 @@ const AddMedicinePage: React.FC = () => {
 
     // Step 3: Handle form submission
     const handleSubmit = async () => {
-
         // e.preventDefault();
         const updatedFormError = { ...formError };
 
-        if (formData.saltComposition) {
-            updatedFormError.saltStrength = true;
-        } else {
-            delete updatedFormError.saltStrength; 
-        }
+
         const checkFormError = validateFormData(
             {
                 ...formData,
@@ -145,7 +176,7 @@ const AddMedicinePage: React.FC = () => {
 
             try {
 
-                const finalData:any = new FormData();
+                const finalData: any = new FormData();
 
                 setIsSubmitFormLoading(true)
                 // Ensure price is a valid number (float)
@@ -163,7 +194,23 @@ const AddMedicinePage: React.FC = () => {
                 // }
 
                 for (const [key, value] of Object.entries(formData)) {
-                    finalData.append(key, value);
+                    if (Array.isArray(value)) {
+                        // Handle arrays (e.g., saltComposition)
+                        value.forEach((item, index) => {
+                            if (typeof item === "object") {
+                                // Convert object to JSON string before appending
+                                finalData.append(`${key}[${index}]`, JSON.stringify(item));
+                            } else {
+                                finalData.append(`${key}[${index}]`, item);
+                            }
+                        });
+                    } else if (typeof value === "object" && value !== null) {
+                        // Convert objects to JSON string
+                        finalData.append(key, JSON.stringify(value));
+                    } else {
+                        // Append primitive values normally
+                        finalData.append(key, value);
+                    }
                 }
 
 
@@ -174,7 +221,7 @@ const AddMedicinePage: React.FC = () => {
 
                 // Remove the `id` field from the form data if it's included
                 const { id } = formData;
-               
+
                 if (id) {
                     // Update existing medicine
                     await updateMedicine(id, finalData);
@@ -207,10 +254,12 @@ const AddMedicinePage: React.FC = () => {
                     ndc: '',
                     scheduleType: '',
                     gstPercentage: 0,
-                    saltComposition: '',
+                    saltComposition: [{
+                        name: '',
+                        strength: ''
+                    }],
                     marketedBy: '',
                     hsnCode: '',
-                    saltStrength: "",
                     flavors: '',
                     offers: '',
                     subCategory: '',
@@ -218,7 +267,6 @@ const AddMedicinePage: React.FC = () => {
                 });
 
             } catch (error: any) {
-                console.log("🚀 ~ handleSubmit ~ error:", error)
                 toast.error(error?.response?.data?.message || "Fail to add/update Medicine,try again..");
             }
             finally {

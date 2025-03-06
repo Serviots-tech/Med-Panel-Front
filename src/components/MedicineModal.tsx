@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Medicine } from '../types/medicine';
-// import { XMarkIcon } from '@heroicons/react/16/solid';
 import { Modal, Row, Col, Typography, Divider } from 'antd';
 import { Image } from 'antd';
 import { configData } from '../helpers/config';
@@ -16,13 +15,24 @@ interface MedicineModalProps {
 }
 
 const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFormData }) => {
+    console.log("🚀 ~ medicine:", medicine)
     if (!medicine) return null;
+
+    const saltName: any[] = []
+    const saltStrength: any[] = []
 
     const getDoseFormName = (doseFormId: string) => {
         const matchedItem = doseFormData.find((item: any) => item.id === doseFormId);
         return matchedItem ? matchedItem.name : "";
     };
 
+
+
+    medicine?.saltComposition.map((val: any) => {
+        const parsedVal = JSON.parse(val)
+        saltName.push(parsedVal?.name)
+        saltStrength.push(parsedVal?.strength)
+    })
     return (
         <Modal
             title="Medicine Details"
@@ -60,10 +70,6 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                     <Col span={8}>
                         <Text strong>Dosage Form :- </Text>
                         <Text>{getDoseFormName(medicine.doseFormId)}</Text>
-                    </Col>
-                    <Col span={8}>
-                        <Text strong>NDC :- </Text>
-                        <Text>{medicine.ndc}</Text>
                     </Col>
                 </Row>
 
@@ -147,34 +153,38 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                     </Col>
                     <Col span={8}>
                         <Text strong>Salt Strenght  :- </Text>
-                        <Text>{medicine.saltStrength}</Text>
+                        {saltName?.map((val, index) => (
+                          <div className='flex'>{index+1}.  <li className='ps-3' key={index}> {val}</li></div>
+                        ))}
                     </Col>
                     <Col span={8}>
                         <Text strong>Salt Composition:- </Text>
-                        <Text>{medicine.saltComposition}</Text>
+                        {saltStrength?.map((val, index) => (
+                           <div className='flex'>{index+1}.  <li className='ps-3' key={index}> {val}</li></div>
+                        ))}
                     </Col>
 
                 </Row>
 
                 {medicine?.image?.length ? (
                     <>
-                    <Divider />
-                    <Row gutter={24}>
-                        <Col span={24}>
-                            <Text strong>Image:</Text>
-                            <Row gutter={16}>
-                                {(medicine?.image as any).map((url: string, index: number) => (
-                                    <Col span={8} key={index}>
-                                        <Image
-                                            src={`${configData.s3baseURL}${url}`}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            preview={true}
-                                        />
-                                    </Col>
-                                ))}
-                            </Row>
-                        </Col>
-                    </Row>
+                        <Divider />
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Text strong>Image:</Text>
+                                <Row gutter={16}>
+                                    {(medicine?.image as any).map((url: string, index: number) => (
+                                        <Col span={8} key={index}>
+                                            <Image
+                                                src={`${configData.s3baseURL}${url}`}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                preview={true}
+                                            />
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </Col>
+                        </Row>
                     </>
                 ) : <></>}
             </div>

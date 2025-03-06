@@ -12,7 +12,7 @@ export const PermissionContext = createContext<any>({
 
 
 export const AuthLayout = () => {
-	console.log("object")
+
 	const authpath = [
 		'/login'
 	];
@@ -22,7 +22,7 @@ export const AuthLayout = () => {
 
 	const [userId, setUserId] = useState('');
 	const [userRole, setUserRole] = useState('');
-	
+
 	const token = localStorage.getItem('accessToken');
 
 	const path = window.location.pathname;
@@ -32,17 +32,17 @@ export const AuthLayout = () => {
 			navigate('/login');
 		}
 	}, [pathname]);
-	
+
 	useEffect(() => {
 		const token = localStorage.getItem('accessToken');
 
 		if (token) {
 			const userData: User = jwtDecode(token as string);
-				if (userData) {
-					setUserId(userData?.id);
-					setUserRole(userData?.role)
+			if (userData) {
+				setUserId(userData?.id);
+				setUserRole(userData?.role)
 
-				}
+			}
 			if (path === '/login') {
 
 				navigate("/", { replace: true });
@@ -51,6 +51,7 @@ export const AuthLayout = () => {
 	}, []);
 
 	useEffect(() => {
+
 		if (token) {
 			try {
 				const userData: User = jwtDecode(token as string);
@@ -62,7 +63,7 @@ export const AuthLayout = () => {
 				if (path === '/login') {
 					navigate('/');
 				}
-			} catch (e:any) {
+			} catch (e: any) {
 				console.log("🚀 ~ useEffect ~ e:", e)
 				localStorage.removeItem('accessToken');
 				navigate('/login');

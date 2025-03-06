@@ -33,14 +33,14 @@ export interface Medicine {
     image?: string;
     scheduleType: string;
     gstPercentage: number;
-    saltComposition: string;
     hsnCode: string;
-    saltStrength: string;
+    saltComposition: SaltComposition[];
     flavors: string;
     offers: string;
-    subCategory:string 
+    subCategory: string
     // expiryDate: Date | null;
 }
+
 
 // Type for Medicine form input, used when creating or updating a medicine
 export interface MedicineFormInput {
@@ -63,15 +63,19 @@ export interface MedicineFormInput {
     image?: string;
     scheduleType: string;
     gstPercentage: number;
-    saltComposition: string;
+    saltComposition: SaltComposition[];
     hsnCode: string
-    saltStrength: string;
     flavors: string;
     offers: string;
-    subCategory:string 
+    subCategory: string
 
     // expiryDate: Date | null;
 }
+interface SaltComposition {
+    name: string
+    strength: string
+}
+
 
 export type CustomSize = 'small' | 'middle' | 'large' | undefined;
 

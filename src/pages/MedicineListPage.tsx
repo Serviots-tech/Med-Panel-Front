@@ -11,7 +11,9 @@ import dayjs from 'dayjs';
 const MedicineListPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
+    console.log("🚀 ~ selectedMedicine:", selectedMedicine)
     const [medicines, setMedicines] = useState<Medicine[]>([]);
+    console.log("🚀 ~ medicines:", medicines)
     const [doseFormData, setDoseFormData] = useState<any>()
     const [searchValue, setSearchValue] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -56,6 +58,7 @@ const MedicineListPage: React.FC = () => {
             }
             
             const response = await getMedicines(query);
+            console.log("🚀 ~ fetchMedicines ~ response:", response)
 
             if (response && Array.isArray(response.data)) {
                 setMedicines(response.data);

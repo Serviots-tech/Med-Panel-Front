@@ -13,6 +13,7 @@ import { configData } from '../helpers/config';
 import { Loader } from './Loader';
 import AutoCompleteField from './AutoCompleteField';
 import { getMedicines } from '../services/medicine';
+import AddInput from './AddInput';
 
 interface MedicineFormProps {
     formData: MedicineFormInput;
@@ -32,45 +33,41 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
     let isRemoving = false;
     const [hasError, setHasError] = useState(false);
 
-    const [saltCompositionOptions, setSaltCompotisionOptions] = useState([])
     const [medicineNameOptions, setMedicineNameOptions] = useState([])
     const [manufacturerOptions, setManufacturerOptions] = useState([])
     const [marketedByOptions, setMarketedByOptions] = useState([])
     const [brandNameOptions, setBrandNameOptions] = useState([])
     const [weightageOptions, setWeightageOptions] = useState([])
-    const [saltStrengthOptions, setSaltStrengthOptions] = useState([])
     const [flavorsOptions, setFlavorsOptions] = useState([])
     const [offersOptions, setOffersOptions] = useState([])
-    console.log("🚀 ~ hasError:", hasError)
-
     const debounceDelay = 300;
     let debounceTimeout: number | undefined;
 
-    const handleSaltCompositionSearch = useCallback((value: string) => {
-        if (debounceTimeout) clearTimeout(debounceTimeout);
+    // const handleSaltCompositionSearch = useCallback((value: string) => {
+    //     if (debounceTimeout) clearTimeout(debounceTimeout);
 
-        debounceTimeout = setTimeout(async () => {
-            if (value) {
-                try {
-                    const query = {
-                        targetField: 'saltComposition',
-                        search: value,
-                    };
-                    const res = await getMedicines(query);
-                    setSaltCompotisionOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.saltComposition,
-                            value: item.saltComposition,
-                        }))
-                    );
-                } catch (e) {
-                    setSaltCompotisionOptions([]);
-                }
-            } else {
-                setSaltCompotisionOptions([]);
-            }
-        }, debounceDelay);
-    }, []);
+    //     debounceTimeout = setTimeout(async () => {
+    //         if (value) {
+    //             try {
+    //                 const query = {
+    //                     targetField: 'saltComposition',
+    //                     search: value,
+    //                 };
+    //                 const res = await getMedicines(query);
+    //                 setSaltCompotisionOptions(
+    //                     res?.data.map((item: any) => ({
+    //                         label: item.saltComposition,
+    //                         value: item.saltComposition,
+    //                     }))
+    //                 );
+    //             } catch (e) {
+    //                 setSaltCompotisionOptions([]);
+    //             }
+    //         } else {
+    //             setSaltCompotisionOptions([]);
+    //         }
+    //     }, debounceDelay);
+    // }, []);
 
     const handleMedicineNameSearch = useCallback((value: string) => {
         if (debounceTimeout) clearTimeout(debounceTimeout);
@@ -175,6 +172,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             }
         }, debounceDelay);
     }, []);
+
     const handleWeightageSearch = useCallback((value: string) => {
         if (debounceTimeout) clearTimeout(debounceTimeout);
 
@@ -201,31 +199,31 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         }, debounceDelay);
     }, []);
 
-    const handlSaltStrengthSearch = useCallback((value: string) => {
-        if (debounceTimeout) clearTimeout(debounceTimeout);
+    // const handlSaltStrengthSearch = useCallback((value: string) => {
+    //     if (debounceTimeout) clearTimeout(debounceTimeout);
 
-        debounceTimeout = setTimeout(async () => {
-            if (value) {
-                try {
-                    const query = {
-                        targetField: 'saltStrength',
-                        search: value,
-                    };
-                    const res = await getMedicines(query);
-                    setSaltStrengthOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.saltStrength,
-                            value: item.saltStrength,
-                        }))
-                    );
-                } catch (e) {
-                    setSaltStrengthOptions([]);
-                }
-            } else {
-                setSaltStrengthOptions([]);
-            }
-        }, debounceDelay);
-    }, []);
+    //     debounceTimeout = setTimeout(async () => {
+    //         if (value) {
+    //             try {
+    //                 const query = {
+    //                     targetField: 'saltStrength',
+    //                     search: value,
+    //                 };
+    //                 const res = await getMedicines(query);
+    //                 setSaltStrengthOptions(
+    //                     res?.data.map((item: any) => ({
+    //                         label: item.saltStrength,
+    //                         value: item.saltStrength,
+    //                     }))
+    //                 );
+    //             } catch (e) {
+    //                 setSaltStrengthOptions([]);
+    //             }
+    //         } else {
+    //             setSaltStrengthOptions([]);
+    //         }
+    //     }, debounceDelay);
+    // }, []);
 
     const handlFlavorsSearch = useCallback((value: string) => {
         if (debounceTimeout) clearTimeout(debounceTimeout);
@@ -252,6 +250,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             }
         }, debounceDelay);
     }, []);
+
     const handlOffersSearch = useCallback((value: string) => {
         if (debounceTimeout) clearTimeout(debounceTimeout);
 
@@ -316,12 +315,14 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             setFileList((prevList: any[]) => prevList.filter((item) => item.uid !== file.uid));
         },
     };
+
     const handleChangeValue = async (
-        value: string | number | null | string[] | boolean,
+        value: string | number | boolean | string[] | { name: string; strength: string }[] | null,
         name: string,
         required: boolean,
         regex?: RegExp | null
     ) => {
+        console.log("🚀 ~ value:", value)
         if (required && typeof value === 'string') {
             setHasError(invalidText(value));
         }
@@ -333,17 +334,10 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             const _regex = new RegExp(regex);
             setHasError(!_regex.test(value));
         }
-        // if (name === 'productType' && value !== 'drug') {
-        //     // Remove formError.barcodeSKU if it exists
-        //     if (formError.hasOwnProperty('barcodeSKU')) {
-        //         delete formError.barcodeSKU;
-        //         setFormError(formError)
-        //     }
-        // }
-        if (name === 'saltComposition') {
 
-            handleSaltCompositionSearch(value as string);
-        }
+        // if (name === 'saltComposition') {
+        //     handleSaltCompositionSearch(value as string);
+        // }
         if (name === 'medicineName') {
 
             handleMedicineNameSearch(value as string);
@@ -367,11 +361,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             handleWeightageSearch(value as string);
         }
 
-        if (name === 'saltStrength') {
-
-            handlSaltStrengthSearch(value as string);
-        }
-
         if (name === 'flavors') {
 
             handlFlavorsSearch(value as string);
@@ -380,14 +369,14 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
             handlOffersSearch(value as string);
         }
-        
+
 
 
         OnChange(value, name);
     };
 
     const OnChange = (
-        value: string | number | null | string[] | boolean,
+        value: string | number | boolean | string[] | { name: string; strength: string }[] | null,
         key: string,
     ) => {
         setFormData((prev: any) => {
@@ -414,24 +403,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                     <Row gutter={[50, 20]} >
                         <Col span={8}>
-                            {/* <InputField
-                                name="medicineName"
-                                value={formData?.medicineName}
-                                label="Medicine Name"
-                                required={true}
-                                helperText="Medicine name is required"
-                                placeholder='Medicine Name'
-                                onChange={(value) => {
-                                    handleChangeValue(
-                                        value,
-                                        'medicineName',
-                                        true
-                                    );
-                                }}
-                                // regex="^\d{10}$"
-                                isError={formError.medicineName}
-                                disabled={false}
-                            /> */}
+
                             <AutoCompleteField
                                 placeholder="Medicine Name"
                                 options={medicineNameOptions}
@@ -450,17 +422,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            {/* <InputField
-                                name="manufacturer"
-                                value={formData.manufacturer}
-                                label="Manufacturer"
-                                required={true}
-                                helperText="Manufacturer is required"
-                                placeholder="Manufacturer"
-                                onChange={(value) => handleChangeValue(value, 'manufacturer', true)}
-                                isError={formError.manufacturer}
-                                disabled={false}
-                            /> */}
 
                             <AutoCompleteField
                                 placeholder="Manufacturer"
@@ -480,18 +441,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            {/* <InputField
-                                name="marketedBy"
-                                value={formData.marketedBy}
-                                label="Marketed By"
-                                required={false}
-                                helperText="Marketed By are required"
-                                placeholder="Marketed By"
-                                onChange={(value) => handleChangeValue(value, 'marketedBy', false)}
-                                isError={formError.marketedBy}
-                                disabled={false}
-                            /> */}
-
+                            
                             <AutoCompleteField
                                 placeholder="Marketed By"
                                 options={marketedByOptions}
@@ -511,18 +461,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            {/* <InputField
-                                name="brandName"
-                                value={formData?.brandName}
-                                label="Brand Name"
-                                required={false}
-                                helperText="Brand name is required"
-                                placeholder="Brand Name"
-                                onChange={(value) => handleChangeValue(value, 'brandName', true)}
-                                isError={formError.brandName}
-                                disabled={false}
-                            /> */}
-
                             <AutoCompleteField
                                 placeholder="Brand Name"
                                 options={brandNameOptions}
@@ -573,8 +511,8 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         <Col span={8}>
                             <SelectDropdown
                                 placeholder="Select Dosage Form"
-                                options = {[
-                                    { label: "Select Value", value: "" }, 
+                                options={[
+                                    { label: "Select Value", value: "" },
                                     ...doseFormData?.map((item: any) => ({
                                         label: item.name,
                                         value: item.id
@@ -622,18 +560,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            {/* <InputField
-                                name="weightage"
-                                value={formData?.weightage}
-                                label="Weightage"
-                                required={true}
-                                helperText="Weightage is required"
-                                placeholder="Weightage"
-                                onChange={(value) => handleChangeValue(value, 'weightage', true)}
-                                isError={formError.weightage}
-                                disabled={false}
-                            /> */}
-
                             <AutoCompleteField
                                 placeholder="Weightage"
                                 options={weightageOptions}
@@ -702,7 +628,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             <SelectDropdown
                                 placeholder="Select Prescription Required"
                                 options={[
-                                    // { label: 'Select', value: 'Select' },
                                     { label: 'YES', value: 'YES' },
                                     { label: 'NO', value: 'NO' }
                                 ]}
@@ -772,52 +697,22 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            <AutoCompleteField
-                                placeholder="Salt Composition"
-                                options={saltCompositionOptions}
-                                value={String(formData.saltComposition)}
-                                onChange={(value) => {
-                                    handleChangeValue(value, 'saltComposition', true);
-                                }}
-                                size="large"
+                            <AddInput
+                                name1={'saltComposition'}
+                                label={'Salt Composition'}
+                                placeholder1='Salt composition'
+                                placeholder2='Salt strength'
+                                value={formData?.saltComposition}
                                 required={false}
-                                helperText="Salt Composition is required"
-                                label="Salt Composition"
-                                disabled={false}
-                                isError={formError.saltComposition}
-
+                                isError={false}
+                                onChange={(value) => {
+                                    handleChangeValue(value, 'saltComposition', false);
+                                }}
                             />
                         </Col>
 
 
-                        <Col span={8}>
-                            {/* <InputField
-                                name="saltStrength"
-                                value={formData.saltStrength}
-                                label="Salt Strength"
-                                required={false}
-                                helperText="Salt strength are required"
-                                placeholder="Salt strength"
-                                onChange={(value) => handleChangeValue(value, 'saltStrength', false)}
-                                isError={formError.saltStrength}
-                                disabled={false}
-                            /> */}
-                            <AutoCompleteField
-                                placeholder="Salt strength"
-                                options={saltStrengthOptions}
-                                value={String(formData.saltStrength)}
-                                onChange={(value) => {
-                                    handleChangeValue(value, 'saltStrength', true);
-                                }}
-                                size="large"
-                                required={false}
-                                helperText="Salt strength is required"
-                                label="Salt Strength"
-                                disabled={false}
-                                isError={formError.saltStrength}
-
-                            />
-                        </Col>
+                       
 
                         <Col span={8}>
                             <SelectDropdown
@@ -841,18 +736,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            {/* <InputField
-                                name="flavors"
-                                value={formData.flavors}
-                                label="Flavors"
-                                required={false}
-                                helperText="Flavors are required"
-                                placeholder="Flavors"
-                                onChange={(value) => handleChangeValue(value, 'flavors', false)}
-                                isError={formError.flavors}
-                                disabled={false}
-                            /> */}
-
                             <AutoCompleteField
                                 placeholder="Flavors"
                                 options={flavorsOptions}
@@ -871,18 +754,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         </Col>
 
                         <Col span={8}>
-                            {/* <InputField
-                                name="offers"
-                                value={formData.offers}
-                                label="Offers"
-                                required={false}
-                                helperText="Offers are required"
-                                placeholder="Offers"
-                                onChange={(value) => handleChangeValue(value, 'offers', false)}
-                                isError={formError.offers}
-                                disabled={false}
-                            /> */}
-
                             <AutoCompleteField
                                 placeholder="Offers"
                                 options={offersOptions}
@@ -904,7 +775,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                             <SelectDropdown
                                 placeholder="Sub Category Type"
                                 options={[
-                                    {label:'Select Value',value:""},
+                                    { label: 'Select Value', value: "" },
                                     { label: 'Mother Care', value: 'MOTHER_CARE' },
                                     { label: 'Protein Powders & Drinks', value: 'PROTEIN_POWDERS_DRINKS' },
                                     { label: 'Vitamins & Supplements', value: 'VITAMINS_SUPPLEMENTS' },

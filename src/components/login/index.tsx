@@ -22,8 +22,7 @@ const LoginComponent: React.FC = () => {
   })
 
   const [hasError, setHasError] = useState(false);
-  console.log("🚀 ~ hasError:", hasError)
-
+  
   const handleSubmit = async () => {
     const checkFormError = validateFormData(
       {
@@ -48,7 +47,6 @@ const LoginComponent: React.FC = () => {
         toast.success("User logged in successfully");
       }
       catch (error: any) {
-        // console.log("🚀 ~ handleSubmit ~ e:", e)
         toast.error(error?.response?.data?.message  ||"fail to login, check your credentials")
       }
       finally {
