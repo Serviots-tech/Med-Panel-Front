@@ -32,6 +32,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
     let isRemoving = false;
     const [hasError, setHasError] = useState(false);
+    console.log("🚀 ~ hasError:", hasError)
 
     const [medicineNameOptions, setMedicineNameOptions] = useState([])
     const [manufacturerOptions, setManufacturerOptions] = useState([])

@@ -240,7 +240,6 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                                 picker="date"
                                 format="DD/MM/YYYY"
                                 style={{ width: 200, height: 40 }}
-                                // onChange={(value) => { console.log(value); setSelectedDate(value ? dayjs(value) : null)}}
                                 onChange={(value) => setSelectedDate(value ? dayjs(value).startOf("day") : null)}
                                 value={seletedDate}
                                 allowClear={true}

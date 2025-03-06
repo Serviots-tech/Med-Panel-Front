@@ -46,10 +46,6 @@ const InputNumberField = (props: Props) => {
 		showLabel = true,
 		style,
 	} = props;
-		console.log("🚀 ~ InputNumberField ~ regex:", regex)
-		console.log("🚀 ~ InputNumberField ~ parser:", parser)
-		console.log("🚀 ~ InputNumberField ~ formatter:", formatter)
-
 	const [hasError, setHasError] = useState(false);
 
 	const handleChange = (value: number | null) => {

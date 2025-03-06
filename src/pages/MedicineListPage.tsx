@@ -1,27 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
-import { getMedicines, deleteMedicine } from '../services/medicine';
-import { Medicine } from '../types/medicine';
-import MedicineTable from '../components/MedicineTable';
-import MedicineModal from '../components/MedicineModal';
 import { TablePaginationConfig } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { getApi } from '../apis';
-import dayjs from 'dayjs';
+import MedicineModal from '../components/MedicineModal';
+import MedicineTable from '../components/MedicineTable';
+import { deleteMedicine, getMedicines } from '../services/medicine';
+import { Medicine } from '../types/medicine';
 
 const MedicineListPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
-    console.log("🚀 ~ selectedMedicine:", selectedMedicine)
     const [medicines, setMedicines] = useState<Medicine[]>([]);
-    console.log("🚀 ~ medicines:", medicines)
     const [doseFormData, setDoseFormData] = useState<any>()
     const [searchValue, setSearchValue] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
 
     const [selectedField,setSelectedField]= useState('medicineName')
     const [selectedUser,setSelectedUser]= useState(null)
-    // const [selectDate,setSelectedDate]=useState(dayjs())
-    const [selectDate, setSelectedDate] = useState(dayjs().startOf("day"));
+    const [selectDate, setSelectedDate] = useState();
     const [userOptions, setUserOptions] = useState<any>()
 
     const debounceDelay = 700;
@@ -58,8 +54,6 @@ const MedicineListPage: React.FC = () => {
             }
             
             const response = await getMedicines(query);
-            console.log("🚀 ~ fetchMedicines ~ response:", response)
-
             if (response && Array.isArray(response.data)) {
                 setMedicines(response.data);
                 setCurrentPage(response?.pagination?.page)
@@ -104,7 +98,6 @@ const MedicineListPage: React.FC = () => {
             setDoseFormData(doseFoemData?.data?.data?.data?.data)
         }
         catch (error: any) {
-            console.log("🚀 ~ fetchDoseForms ~ error:", error)
             
         }
     }
@@ -118,7 +111,6 @@ const MedicineListPage: React.FC = () => {
             setUserOptions(userOptionsData)
         }
         catch (error: any) {
-            console.log("🚀 ~ fetchDoseForms ~ error:", error)
         }
     }
 

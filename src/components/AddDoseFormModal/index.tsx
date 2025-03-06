@@ -12,6 +12,8 @@ const AddDoseFormModal = ({ isAddDoseFormModalOpen, setIsAddDoseFormModalOpen, f
     const [loading, setLoading] = useState(false);
 
     const [hasError, setHasError] = useState(false);
+    console.log("🚀 ~ hasError:", hasError)
+
     const [formData, setFormData] = useState<any>({
         name: doseFormToEdit ? doseFormToEdit?.name : ''
     })
