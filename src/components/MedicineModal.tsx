@@ -162,7 +162,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                     <Col span={8}>
                         <Text strong>Salt Strength:- </Text>
                         {saltStrength?.map((val, index) => (
-                            <div className='flex'>{index + 1}.  <li className='ps-3 break-words whitespace-normal' key={index}> {val}</li></div>
+                            <div className='flex w-[212px]'>{index + 1}.  <li className='ps-3 break-words whitespace-normal w-[200px]' key={index}> {val}</li></div>
                         ))}
                     </Col>
 
