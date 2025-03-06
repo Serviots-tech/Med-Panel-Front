@@ -58,7 +58,7 @@ function AddInput(props: Props) {
     };
     return (
         <div className="flex flex-col gap-2">
-            {value.map((val, index) => (
+            {(value.length > 0 ? value : [{ name: "", strength: "" }]).map((val, index) => (
                 <>
                     <div className="flex items-center gap-2">
                         {index === 0 && (<p className={`mb-1 text-gray-700 font-semibold `}>
