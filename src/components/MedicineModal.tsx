@@ -27,12 +27,14 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
     };
 
 
+    if (medicine?.saltComposition !== null) {
+        medicine?.saltComposition.map((val: any) => {
+            const parsedVal = JSON.parse(val)
+            saltName.push(parsedVal?.name)
+            saltStrength.push(parsedVal?.strength)
+        })
+    }
 
-    medicine?.saltComposition.map((val: any) => {
-        const parsedVal = JSON.parse(val)
-        saltName.push(parsedVal?.name)
-        saltStrength.push(parsedVal?.strength)
-    })
     return (
         <Modal
             title="Medicine Details"
@@ -152,15 +154,15 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                         <Text>{getCategoryLabel(medicine.subCategory as ProductCategory)}</Text>
                     </Col>
                     <Col span={8}>
-                        <Text strong>Salt Strenght  :- </Text>
+                        <Text strong>Salt Composition:- </Text>
                         {saltName?.map((val, index) => (
-                          <div className='flex'>{index+1}.  <li className='ps-3' key={index}> {val}</li></div>
+                            <div className='flex'>{index + 1}.  <li className='ps-3' key={index}> {val}</li></div>
                         ))}
                     </Col>
                     <Col span={8}>
-                        <Text strong>Salt Composition:- </Text>
+                        <Text strong>Salt Strength:- </Text>
                         {saltStrength?.map((val, index) => (
-                           <div className='flex'>{index+1}.  <li className='ps-3' key={index}> {val}</li></div>
+                            <div className='flex'>{index + 1}.  <li className='ps-3 break-words whitespace-normal' key={index}> {val}</li></div>
                         ))}
                     </Col>
 
