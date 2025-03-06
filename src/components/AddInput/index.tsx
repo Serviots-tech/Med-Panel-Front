@@ -79,7 +79,7 @@ function AddInput(props: Props) {
     };
 
     const handleChange = (index: number, field: "name" | "strength", inputValue: string) => {
-        let sanitizedValue = inputValue.replace(/^-/, ""); // Prevent negative sign
+        let sanitizedValue = inputValue.replace(/^[-@\$+#]+/, ""); // Prevent negative sign
         const updatedValues = [...value];
         updatedValues[index] = { ...updatedValues[index], [field]: sanitizedValue };
         onChange(updatedValues);
