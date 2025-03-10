@@ -336,9 +336,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             setHasError(!_regex.test(value));
         }
 
-        // if (name === 'saltComposition') {
-        //     handleSaltCompositionSearch(value as string);
-        // }
         if (name === 'medicineName') {
 
             handleMedicineNameSearch(value as string);

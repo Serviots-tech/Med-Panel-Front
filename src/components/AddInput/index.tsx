@@ -44,6 +44,7 @@ function AddInput(props: Props) {
         type = "text",
         size = "large",
     } = props;
+        console.log("🚀 ~ AddInput ~ value:", value)
 
     const [errors, setErrors] = useState<{ name: boolean; strength: boolean }[]>([]);
 
@@ -79,7 +80,7 @@ function AddInput(props: Props) {
     };
 
     const handleChange = (index: number, field: "name" | "strength", inputValue: string) => {
-        let sanitizedValue = inputValue.replace(/^[-@\$+#]+/, ""); // Prevent negative sign
+        let sanitizedValue = inputValue.replace(/^[-@\$+#]+/, ""); 
         const updatedValues = [...value];
         updatedValues[index] = { ...updatedValues[index], [field]: sanitizedValue };
         onChange(updatedValues);
@@ -95,7 +96,7 @@ function AddInput(props: Props) {
 
     return (
         <div className="flex flex-col gap-2">
-            {value.map((val, index) => (
+            {(value.length === 0 ? [{ name: "", strength: "" }] : value).map((val, index) => (
                 <div key={index} className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                         {index === 0 && (

@@ -75,33 +75,7 @@ const AddMedicinePage: React.FC = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    // Fetch existing medicine data if id is provided
-    // useEffect(() => {
-    //     if (id) {
-    //         const fetchMedicine = async () => {
-    //             try {
-    //                 setLoading(true); 
-    //                 const response = await getMedicineById(id);
-    //                    // Parse saltComposition if it exists and is an array
-    //                    const parsedSaltComposition = Array.isArray(data?.saltComposition)
-    //                    ? data.saltComposition.map((item: string) => JSON.parse(item))
-    //                    : [];
-
-    //                 if (response) {
-    //                     setFormData({ ...response?.data, subCategory: response?.data?.subCategory ?? "", doseFormId: response?.data?.doseFormId ?? "" });
-    //                 }
-    //             } catch (e: any) {
-    //                 toast.error("some thing went wrong ,login again")
-
-    //             }
-    //             finally {
-    //                 setLoading(false); 
-    //             }
-    //         };
-    //         fetchMedicine();
-    //     }
-    // }, [id]);
-
+   
     useEffect(() => {
         if (id) {
             const fetchMedicine = async () => {
@@ -188,10 +162,6 @@ const AddMedicinePage: React.FC = () => {
                     formData.price = 0;
                 }
 
-                // if (!(formData?.image as any)?.length && fileList.length < 3) {
-                //     toast.error("upload minimum 3 images")
-                //     return
-                // }
 
                 for (const [key, value] of Object.entries(formData)) {
                     if (Array.isArray(value)) {
@@ -218,6 +188,9 @@ const AddMedicinePage: React.FC = () => {
                     finalData.append('files', file.originFileObj);
                 });
                 // finalData.append('files', file);
+                for (let pair of finalData.entries()) {
+                    console.log(pair[0], ":", pair[1]);
+                }
 
                 // Remove the `id` field from the form data if it's included
                 const { id } = formData;
