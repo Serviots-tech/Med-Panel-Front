@@ -7,7 +7,7 @@ import { invalidText } from '../../helpers/utils';
 type Props = {
   name: string;
   label: string;
-  value: string | number;
+  value: string | number | null;
   placeholder?: string;
   required: boolean;
   isError: boolean;
@@ -90,7 +90,7 @@ const InputField = (props: Props) => {
               placeholder={placeholder}
               prefix={prefix}
               suffix={suffix}
-              value={value}
+              value={value?? ''}
               required={required}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 handleChange(e.target.value)
@@ -109,7 +109,7 @@ const InputField = (props: Props) => {
               status={isError || hasError ? 'error' : ''}
               placeholder={placeholder}
               rows={rows}
-              value={value}
+              value={value?? ''}
               required={required}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 handleChange(e.target.value)

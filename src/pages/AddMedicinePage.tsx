@@ -27,14 +27,13 @@ const AddMedicinePage: React.FC = () => {
 
     const [formData, setFormData] = useState<MedicineFormInput>({
         medicineName: '',
-        brandName: '',
         productType: '',
         doseFormId: '',
         weightage: '',
         manufacturer: '',
         packSize: '',
         unitType: '',
-        price: 0,
+        price: null,
         routeOfAdministration: '',
         sideEffects: '',
         prescriptionReq: '',
@@ -153,13 +152,11 @@ const AddMedicinePage: React.FC = () => {
                 const finalData: any = new FormData();
 
                 setIsSubmitFormLoading(true)
-                // Ensure price is a valid number (float)
                 if (formData?.price) {
-                    formData.price = parseFloat(formData.price.toString()); // Convert string to float
+                    formData.price = parseFloat(formData.price.toString()); 
                 }
-                // Handle any invalid price (NaN or non-numeric)
-                if (isNaN(formData?.price)) {
-                    formData.price = 0;
+                if (formData?.price && isNaN(formData?.price)) {
+                    formData.price = parseFloat('0');
                 }
 
 
@@ -212,7 +209,6 @@ const AddMedicinePage: React.FC = () => {
                 // Reset the form after successful submission
                 setFormData({
                     medicineName: '',
-                    brandName: '',
                     productType: '',
                     doseFormId: '',
                     weightage: '',

@@ -16,7 +16,9 @@ export const getMedicines = async (query: any) => {
                 targetField:query?.targetField,
                 search:query?.search,
                 userId:query?.userId,
-                selectedDate:query?.selectedDate
+                selectedDate:query?.selectedDate,
+                sorterField:query?.sorterField,
+                sorterValue:query?.sorterValue
             },
             headers: {
 				Authorization: `bearer ${localStorage.getItem('accessToken')}`,

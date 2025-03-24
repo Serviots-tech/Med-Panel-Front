@@ -6,6 +6,7 @@ import MedicineListPage from '../pages/MedicineListPage';
 import AddMedicinePage from '../pages/AddMedicinePage';
 import { AdminLayout } from '../components/AdminLayout';
 import { DoseForm } from '../pages/DoseForm';
+import { Users } from '../pages/Users';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,12 @@ const router = createBrowserRouter([
           {
             element:<DoseForm/>,
             path:'/dose-form'
-          }
+          },
+          {
+            element:<Users/>,
+            path:'/users'
+          },
+          
         ]
       },
       {

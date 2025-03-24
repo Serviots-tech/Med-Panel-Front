@@ -95,3 +95,4 @@ const packagingLabels: Record<PackagingType, string> = {
 export const getPackagingLabel = (type: PackagingType): string => {
     return packagingLabels[type] || type;
 };
+

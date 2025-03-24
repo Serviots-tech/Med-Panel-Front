@@ -46,7 +46,6 @@ interface MedicineTableProps {
 
 const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSearch, setSearchValue, seletedDate, setSelectedDate, userOptions, selectedUser, setSelectedUser, setSelectedField, selectedField, searchValue, handleSearch, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
     const [medicineToDelete, setMedicineToDelete] = useState<Medicine | null>(null);
     const navigate = useNavigate();
     const context = useContext(PermissionContext);
@@ -111,26 +110,38 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
             title: 'Medicine Name',
             dataIndex: 'medicineName',
             key: 'medicineName',
+            sorter: () => { return null as any },
+            render: (_text: string, _record: Medicine, index: number) => {
+                return ( <div key={index}> <p className='text-3xl'>
+                    {_record.medicineName}</p>
+                    <p className='text-gray-500'>1-{_record.packSize.toLocaleLowerCase()} of {_record?.weightage.toLocaleLowerCase()}{_record?.unitType.toLocaleLowerCase()}</p></div>)
+            },
+
         },
         {
             title: 'Weightage',
             dataIndex: 'weightage',
             key: 'weightage',
+            sorter: () => { return null as any },
+
         },
         {
             title: 'Pack Size',
             dataIndex: 'packSize',
             key: 'packSize',
+            sorter: () => { return null as any },
         },
         {
             title: 'Product Type',
             dataIndex: 'productType',
             key: 'productType',
+            sorter: () => { return null as any },
         },
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
+            sorter: () => { return null as any },
         },
         {
             title: 'Actions',
@@ -144,7 +155,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                         type="link"
                     >
                     </Button>
-                    <Link to={`/add-medicine/${medicine.id}`}>
+                    {context.userRole === "ADMIN" && <Link to={`/add-medicine/${medicine.id}`}>
                         <Button
                             className='cursor-pointer'
                             icon={<PencilIcon className="h-8 w-8" />}
@@ -152,6 +163,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                         >
                         </Button>
                     </Link>
+                    }
                     {context.userRole === "ADMIN" && <Button
                         className='cursor-pointer'
                         icon={<TrashIcon className="h-8 w-8" />}
@@ -189,10 +201,10 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                             <Button
                                 type="primary"
                                 onClick={() => {
-                                    setIsAddUserModalOpen(true)
+                                    navigate('/users')
                                 }}
                             >
-                                Add User
+                                User
                             </Button>
                             <Button
                                 type="primary"
@@ -218,23 +230,22 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
 
             </div>
             <div className="flex justify-between mb-4"><div>
-                    <Button
-                        type="primary"
-                        onClick={() => {
-                            setSearchValue('');
-                            setDebouncedSearch('');
-                            setSelectedField('medicineName')
-                            setSelectedUser(null)
-                            setSelectedDate(dayjs().startOf("day"))
-                        }}
-                    >
-                        clear
-                    </Button>
-                </div>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        setSearchValue('');
+                        setDebouncedSearch('');
+                        setSelectedField('medicineName')
+                        setSelectedUser(context.userRole !== "ADMIN" ? null : context?.userId)
+                        setSelectedDate(dayjs().startOf("day"))
+                    }}
+                >
+                    clear
+                </Button>
+            </div>
 
                 <div className="flex space-x-4">
                     <>
-                    {context.userRole === "ADMIN" && (
                         <>
                             <DatePicker
                                 picker="date"
@@ -255,51 +266,50 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                                 required={true}
                                 helperText="Unit is required"
                                 label=""
-                                disabled={false}
+                                disabled={context.userRole !== "ADMIN" ? true : false}
                                 isError={false}
                             />
-                            </>
-                            )}
+                        </>
 
-                            <SelectDropdown
-                                placeholder="Select Unit"
-                                options={[
-                                    { label: 'Medicine Name', value: 'medicineName' },
-                                    { label: 'Brand Name', value: 'brandName' },
-                                    { label: 'Product Type', value: 'productType' },
-                                    { label: 'Weightage', value: 'weightage' },
-                                    { label: 'Manufacturer', value: 'manufacturer' },
-                                    { label: 'Pack ', value: 'packSize' },
-                                    { label: 'Unit Type', value: 'unitType' },
-                                    { label: 'Price', value: 'price' },
-                                    { label: 'Route of Administration', value: 'routeOfAdministration' },
-                                    { label: 'Side Effects', value: 'sideEffects' },
-                                    { label: 'Barcode SKU', value: 'barcodeSKU' },
-                                    { label: 'NDC', value: 'ndc' },
-                                    { label: 'Schedule Type', value: 'scheduleType' },
-                                    { label: 'GST Percentage', value: 'gstPercentage' },
-                                    { label: 'Salt Composition', value: 'saltComposition' },
-                                ]}
-                                value={selectedField}
-                                onChange={(value: any) => {
+                        <SelectDropdown
+                            placeholder="Select Unit"
+                            options={[
+                                { label: 'Medicine Name', value: 'medicineName' },
+                                // { label: 'Brand Name', value: 'brandName' },
+                                { label: 'Product Type', value: 'productType' },
+                                { label: 'Weightage', value: 'weightage' },
+                                { label: 'Manufacturer', value: 'manufacturer' },
+                                { label: 'Pack ', value: 'packSize' },
+                                { label: 'Unit Type', value: 'unitType' },
+                                { label: 'Price', value: 'price' },
+                                { label: 'Route of Administration', value: 'routeOfAdministration' },
+                                { label: 'Side Effects', value: 'sideEffects' },
+                                { label: 'Barcode SKU', value: 'barcodeSKU' },
+                                { label: 'NDC', value: 'ndc' },
+                                { label: 'Schedule Type', value: 'scheduleType' },
+                                { label: 'GST Percentage', value: 'gstPercentage' },
+                                { label: 'Salt Composition', value: 'saltComposition' },
+                            ]}
+                            value={selectedField}
+                            onChange={(value: any) => {
 
-                                    setSelectedField(value)
-                                }}
-                                size="large"
-                                required={true}
-                                helperText="Unit is required"
-                                label=""
-                                disabled={false}
-                                isError={false}
-                            />
-                            <SearchComponent
-                                className='w-96'
-                                placeHolder={`Search ${selectedField}...`}
-                                suffixIcon={<SearchOutlined />}
-                                handleChange={handleSearch}
-                                value={searchValue}
-                                size="large"
-                            />
+                                setSelectedField(value)
+                            }}
+                            size="large"
+                            required={true}
+                            helperText="Unit is required"
+                            label=""
+                            disabled={false}
+                            isError={false}
+                        />
+                        <SearchComponent
+                            className='w-96'
+                            placeHolder={`Search ${selectedField}...`}
+                            suffixIcon={<SearchOutlined />}
+                            handleChange={handleSearch}
+                            value={searchValue}
+                            size="large"
+                        />
                     </>
                 </div>
             </div>
@@ -332,10 +342,6 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                 onConfirm={handleConfirmDelete}
                 isDeleteLoading={isDeleteLoading}
                 itemName={medicineToDelete?.medicineName || ""}
-            />
-            <AddUserModal
-                isAddUserModelOpen={isAddUserModalOpen}
-                setIsAddUserModelOpen={setIsAddUserModalOpen}
             />
         </div>
     );

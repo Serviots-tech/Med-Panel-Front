@@ -34,41 +34,14 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
     const [hasError, setHasError] = useState(false);
     console.log("🚀 ~ hasError:", hasError)
 
-    const [medicineNameOptions, setMedicineNameOptions] = useState([])
-    const [manufacturerOptions, setManufacturerOptions] = useState([])
-    const [marketedByOptions, setMarketedByOptions] = useState([])
-    const [brandNameOptions, setBrandNameOptions] = useState([])
-    const [weightageOptions, setWeightageOptions] = useState([])
-    const [flavorsOptions, setFlavorsOptions] = useState([])
-    const [offersOptions, setOffersOptions] = useState([])
+    const [medicineNameOptions, setMedicineNameOptions] = useState<any>([])
+    const [manufacturerOptions, setManufacturerOptions] = useState<any>([])
+    const [marketedByOptions, setMarketedByOptions] = useState<any>([])
+    const [weightageOptions, setWeightageOptions] = useState<any>([])
+    const [flavorsOptions, setFlavorsOptions] = useState<any>([])
+    const [offersOptions, setOffersOptions] = useState<any>([])
     const debounceDelay = 300;
     let debounceTimeout: number | undefined;
-
-    // const handleSaltCompositionSearch = useCallback((value: string) => {
-    //     if (debounceTimeout) clearTimeout(debounceTimeout);
-
-    //     debounceTimeout = setTimeout(async () => {
-    //         if (value) {
-    //             try {
-    //                 const query = {
-    //                     targetField: 'saltComposition',
-    //                     search: value,
-    //                 };
-    //                 const res = await getMedicines(query);
-    //                 setSaltCompotisionOptions(
-    //                     res?.data.map((item: any) => ({
-    //                         label: item.saltComposition,
-    //                         value: item.saltComposition,
-    //                     }))
-    //                 );
-    //             } catch (e) {
-    //                 setSaltCompotisionOptions([]);
-    //             }
-    //         } else {
-    //             setSaltCompotisionOptions([]);
-    //         }
-    //     }, debounceDelay);
-    // }, []);
 
     const handleMedicineNameSearch = useCallback((value: string) => {
         if (debounceTimeout) clearTimeout(debounceTimeout);
@@ -82,11 +55,14 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     };
                     const res = await getMedicines(query);
                     setMedicineNameOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.medicineName,
-                            value: item.medicineName,
+                        Array.from(
+                            new Set(res?.data.map((item: { medicineName: string }) => item.medicineName))
+                        ).map((medicineName) => ({
+                            label: medicineName,
+                            value: medicineName,
                         }))
                     );
+                    
                 } catch (e) {
                     setMedicineNameOptions([]);
                 }
@@ -108,11 +84,14 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     };
                     const res = await getMedicines(query);
                     setManufacturerOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.manufacturer,
-                            value: item.manufacturer,
+                        Array.from(
+                            new Set(res?.data.map((item: any) => item.manufacturer))
+                        ).map((manufacturer) => ({
+                            label: manufacturer,
+                            value: manufacturer,
                         }))
                     );
+                    
                 } catch (e) {
                     setManufacturerOptions([]);
                 }
@@ -134,9 +113,11 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     };
                     const res = await getMedicines(query);
                     setMarketedByOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.marketedBy,
-                            value: item.marketedBy,
+                        Array.from(
+                            new Set(res?.data.map((item: any) => item.marketedBy))
+                        ).map((marketedBy) => ({
+                            label: marketedBy as string,
+                            value: marketedBy as string,
                         }))
                     );
                 } catch (e) {
@@ -144,32 +125,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                 }
             } else {
                 setMarketedByOptions([]);
-            }
-        }, debounceDelay);
-    }, []);
-
-    const handleBrandNameSearch = useCallback((value: string) => {
-        if (debounceTimeout) clearTimeout(debounceTimeout);
-
-        debounceTimeout = setTimeout(async () => {
-            if (value) {
-                try {
-                    const query = {
-                        targetField: 'brandName',
-                        search: value,
-                    };
-                    const res = await getMedicines(query);
-                    setBrandNameOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.brandName,
-                            value: item.brandName,
-                        }))
-                    );
-                } catch (e) {
-                    setBrandNameOptions([]);
-                }
-            } else {
-                setBrandNameOptions([]);
             }
         }, debounceDelay);
     }, []);
@@ -186,9 +141,11 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     };
                     const res = await getMedicines(query);
                     setWeightageOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.weightage,
-                            value: item.weightage,
+                        Array.from(
+                            new Set(res?.data.map((item: any) => item.weightage))
+                        ).map((weightage) => ({
+                            label: weightage as string,
+                            value: weightage as string,
                         }))
                     );
                 } catch (e) {
@@ -199,32 +156,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             }
         }, debounceDelay);
     }, []);
-
-    // const handlSaltStrengthSearch = useCallback((value: string) => {
-    //     if (debounceTimeout) clearTimeout(debounceTimeout);
-
-    //     debounceTimeout = setTimeout(async () => {
-    //         if (value) {
-    //             try {
-    //                 const query = {
-    //                     targetField: 'saltStrength',
-    //                     search: value,
-    //                 };
-    //                 const res = await getMedicines(query);
-    //                 setSaltStrengthOptions(
-    //                     res?.data.map((item: any) => ({
-    //                         label: item.saltStrength,
-    //                         value: item.saltStrength,
-    //                     }))
-    //                 );
-    //             } catch (e) {
-    //                 setSaltStrengthOptions([]);
-    //             }
-    //         } else {
-    //             setSaltStrengthOptions([]);
-    //         }
-    //     }, debounceDelay);
-    // }, []);
 
     const handlFlavorsSearch = useCallback((value: string) => {
         if (debounceTimeout) clearTimeout(debounceTimeout);
@@ -238,9 +169,11 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     };
                     const res = await getMedicines(query);
                     setFlavorsOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.flavors,
-                            value: item.flavors,
+                        Array.from(
+                            new Set(res?.data.map((item: any) => item.flavors))
+                        ).map((flavor) => ({
+                            label: flavor as string,
+                            value: flavor as string,
                         }))
                     );
                 } catch (e) {
@@ -264,9 +197,11 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                     };
                     const res = await getMedicines(query);
                     setOffersOptions(
-                        res?.data.map((item: any) => ({
-                            label: item.offers,
-                            value: item.offers,
+                        Array.from(
+                            new Set(res?.data.map((item: any) => item.offers))
+                        ).map((offer) => ({
+                            label: offer as string,
+                            value: offer as string,
                         }))
                     );
                 } catch (e) {
@@ -281,7 +216,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
     const propsUpload = {
         name: 'file',
         accept: '.jpg,.jpeg,.png',
-        maxCount: 4,
+        maxCount: 6,
         multiple: true,
         fileList: fileList,
         beforeUpload: () => {
@@ -300,7 +235,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
             if (!isRemoving) {
                 // Filter valid files and limit the total count
-                const updatedFileList = newFileList.slice(-4).filter((file: any) => file.size / 1024 / 1024 < 1);
+                const updatedFileList = newFileList.slice(-6).filter((file: any) => file.size / 1024 / 1024 < 1);
                 setFileList(updatedFileList);
             } else {
                 // setIsRemoving(false);
@@ -323,7 +258,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
         required: boolean,
         regex?: RegExp | null
     ) => {
-        console.log("🚀 ~ value:", value)
         if (required && typeof value === 'string') {
             setHasError(invalidText(value));
         }
@@ -349,10 +283,6 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
             handleMarketedBySearch(value as string);
         }
 
-        if (name === 'brandName') {
-
-            handleBrandNameSearch(value as string);
-        }
 
         if (name === 'weightage') {
 
@@ -458,7 +388,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
 
                         </Col>
 
-                        <Col span={8}>
+                        {/* <Col span={8}>
                             <AutoCompleteField
                                 placeholder="Brand Name"
                                 options={brandNameOptions}
@@ -474,7 +404,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                 isError={formError.brandName}
 
                             />
-                        </Col>
+                        </Col> */}
 
 
                         <Col span={8}>
@@ -491,7 +421,8 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                     { label: 'Dairy & Beverages', value: 'Dairy_Beverages' },
                                     { label: 'Fruits & Vegetales', value: 'Fruits_vegetales' },
                                     { label: 'Home & Kitchen', value: 'Home_Kitchen' },
-                                    { label: 'Jewelley', value: 'Jewelley' }
+                                    { label: 'Jewelley', value: 'Jewelley' },
+                                    { label: 'Nutraceuticals', value: 'Nutraceuticals' },
                                 ]}
                                 value={formData.productType}
                                 onChange={(value: any) => {
@@ -587,7 +518,8 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                                     { label: 'Tablet', value: 'TABLET' },
                                     { label: 'Capsule', value: 'CAPSULE' },
                                     { label: 'Ltr', value: 'LTR' },
-                                    { label: 'MDI', value: 'MDI' }
+                                    { label: 'MDI', value: 'MDI' },
+                                    { label: 'MG', value: 'MG' }
 
                                 ]}
                                 value={formData.unitType}
@@ -608,7 +540,7 @@ export const MedicineForm: React.FC<MedicineFormProps> = ({ formData, setFormDat
                         <Col span={8}>
                             <InputField
                                 name="price"
-                                value={formData.price}
+                                value={formData.price }
                                 label="Price"
                                 required={true}
                                 helperText="Price is required"
