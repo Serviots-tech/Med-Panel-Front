@@ -149,6 +149,7 @@ const MedicineListPage: React.FC = () => {
     // Handle page change
     const handlePageChange = (pagination: TablePaginationConfig, filter: any, sorter: any
     ) => {
+        console.log("🚀 ~ filter:", filter)
         setCurrentPage(pagination?.current as number)
         setTotalRecords(pagination?.total as number)
         setpageSize(pagination?.pageSize as number)

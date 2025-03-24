@@ -8,7 +8,6 @@ import ConfirmDeleteModal from '../components/buttons/ConfirmDeleteModal';
 import { deleteMedicine } from '../services/medicine';
 import { Medicine } from '../types/medicine';
 import { PermissionContext } from './AuthLayout';
-import AddUserModal from './AddUserModal';
 import './MedicineTable.css';
 import { SearchOutlined } from '@ant-design/icons';
 import SearchComponent from './SearchComponent';
