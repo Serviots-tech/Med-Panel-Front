@@ -16,14 +16,13 @@ type Float = number;
 export interface Medicine {
     id: string;
     medicineName: string;
-    brandName: string;
     productType: string;
     doseFormId: string;
     weightage: string;
     manufacturer: string;
     packSize: string;
     unitType: string;
-    price: Float;
+    price: Float | null;
     routeOfAdministration: string;
     sideEffects: string;
     prescriptionReq: string;
@@ -46,14 +45,13 @@ export interface Medicine {
 export interface MedicineFormInput {
     id?: string;
     medicineName: string;
-    brandName: string;
     productType: string;
     doseFormId: string;
     weightage: string;
     manufacturer: string;
     packSize: string;
     unitType: string;
-    price: Float;
+    price: Float | null;
     routeOfAdministration: string;
     sideEffects: string;
     marketedBy: string;

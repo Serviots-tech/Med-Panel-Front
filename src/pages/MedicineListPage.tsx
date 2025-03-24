@@ -6,6 +6,7 @@ import MedicineModal from '../components/MedicineModal';
 import MedicineTable from '../components/MedicineTable';
 import { deleteMedicine, getMedicines } from '../services/medicine';
 import { Medicine } from '../types/medicine';
+import { jwtDecode } from 'jwt-decode';
 
 const MedicineListPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,10 +16,14 @@ const MedicineListPage: React.FC = () => {
     const [searchValue, setSearchValue] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
 
-    const [selectedField,setSelectedField]= useState('medicineName')
-    const [selectedUser,setSelectedUser]= useState(null)
+    const [selectedField, setSelectedField] = useState('medicineName')
+    const [selectedUser, setSelectedUser] = useState<any>(null)
     const [selectDate, setSelectedDate] = useState();
     const [userOptions, setUserOptions] = useState<any>()
+    const [sorterField, setSorterField] = useState('medicineName')
+    const [sorterValue, setSorterValue] = useState('asc')
+
+    const [tokenData, setTokenData] = useState<any>()
 
     const debounceDelay = 700;
 
@@ -30,16 +35,27 @@ const MedicineListPage: React.FC = () => {
 
     useEffect(() => {
         const handler = setTimeout(() => {
-          setDebouncedSearch(searchValue);
+            setDebouncedSearch(searchValue);
         }, debounceDelay);
-      
+
         return () => clearTimeout(handler);
-      }, [searchValue]);
-      
+    }, [searchValue]);
+
 
     const handleSearch = (value: string) => {
         setSearchValue(value);
     };
+
+    useEffect(() => {
+        const tokenData: {
+            role: string;
+            id: string;
+        } = jwtDecode(localStorage.getItem('accessToken') as string);
+        setTokenData(tokenData)
+        if (tokenData.role !== "ADMIN") {
+            setSelectedUser(tokenData?.id as string)
+        }
+    }, []);
 
     const fetchMedicines = async () => {
         try {
@@ -47,12 +63,14 @@ const MedicineListPage: React.FC = () => {
             const query = {
                 currentPage,
                 pageSize,
-                search: searchValue,
+                search: debouncedSearch,
                 targetField: selectedField,
-                userId:selectedUser ?? null,
-                selectedDate:selectDate?? null,
+                userId: selectedUser ?? null,
+                selectedDate: selectDate ?? null,
+                sorterField,
+                sorterValue
             }
-            
+
             const response = await getMedicines(query);
             if (response && Array.isArray(response.data)) {
                 setMedicines(response.data);
@@ -72,8 +90,10 @@ const MedicineListPage: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchMedicines();
-    }, [currentPage, pageSize, debouncedSearch,selectedUser,selectDate,selectedField]);
+        if (tokenData?.id) {
+            fetchMedicines();
+        }
+    }, [currentPage, pageSize, debouncedSearch, selectedUser, selectDate, selectedField, sorterField, sorterValue, tokenData]);
 
 
     const handleViewDetails = (medicine: Medicine) => {
@@ -98,13 +118,13 @@ const MedicineListPage: React.FC = () => {
             setDoseFormData(doseFoemData?.data?.data?.data?.data)
         }
         catch (error: any) {
-            
+
         }
     }
     const fetchUsersData = async () => {
         try {
-            const userData:any = await getApi('/user/get-all')
-            const userOptionsData=userData?.data?.data?.map((item:any) => ({
+            const userData: any = await getApi('/user/get-all')
+            const userOptionsData = userData?.data?.data?.map((item: any) => ({
                 label: item.name,
                 value: item.id
             }));
@@ -127,11 +147,13 @@ const MedicineListPage: React.FC = () => {
     };
 
     // Handle page change
-    const handlePageChange = (pagination: TablePaginationConfig,
+    const handlePageChange = (pagination: TablePaginationConfig, filter: any, sorter: any
     ) => {
         setCurrentPage(pagination?.current as number)
         setTotalRecords(pagination?.total as number)
         setpageSize(pagination?.pageSize as number)
+        setSorterField(sorter?.columnKey || sorterField)
+        setSorterValue(sorter?.order === "ascend" ? 'asc' : 'desc')
     };
 
     return (
