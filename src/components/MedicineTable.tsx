@@ -102,13 +102,14 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
             title: 'Sr. No.',
             dataIndex: 'index',
             key: 'index',
-            width: 80,
+            width: '6%',
             render: (_text: string, _record: Medicine, index: number) => index + 1,
         },
         {
             title: 'Medicine Name',
             dataIndex: 'medicineName',
             key: 'medicineName',
+            width: '50%',
             sorter: () => { return null as any },
             render: (_text: string, _record: Medicine, index: number) => {
                 return ( <div key={index}> <p className='text-3xl'>
@@ -121,6 +122,7 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
             title: 'Weightage',
             dataIndex: 'weightage',
             key: 'weightage',
+            width: '10%',
             sorter: () => { return null as any },
 
         },
@@ -128,23 +130,27 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
             title: 'Pack Size',
             dataIndex: 'packSize',
             key: 'packSize',
+            width: '8%',
             sorter: () => { return null as any },
         },
         {
             title: 'Product Type',
             dataIndex: 'productType',
             key: 'productType',
+            width: '10%',
             sorter: () => { return null as any },
         },
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
+            width: '8%',
             sorter: () => { return null as any },
         },
         {
             title: 'Actions',
             key: 'actions',
+            width: '10%',
             render: (_: any, medicine: Medicine) => (
                 <div className="flex justify-center space-x-2">
                     <Button
