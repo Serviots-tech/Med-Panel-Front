@@ -46,7 +46,6 @@ interface MedicineTableProps {
 
 const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSearch, setSearchValue, seletedDate, setSelectedDate, userOptions, selectedUser, setSelectedUser, setSelectedField, selectedField, searchValue, handleSearch, onViewDetails, isLoading, onAddNew, setMedicines, handlePageChange, currentPage, totalRecords, pagesize }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
     const [medicineToDelete, setMedicineToDelete] = useState<Medicine | null>(null);
     const navigate = useNavigate();
     const context = useContext(PermissionContext);
@@ -112,6 +111,11 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
             dataIndex: 'medicineName',
             key: 'medicineName',
             sorter: () => { return null as any },
+            render: (_text: string, _record: Medicine, index: number) => {
+                return ( <div key={index}> <p className='text-3xl'>
+                    {_record.medicineName}</p>
+                    <p className='text-gray-500'>1-{_record.packSize.toLocaleLowerCase()} of {_record?.weightage.toLocaleLowerCase()}{_record?.unitType.toLocaleLowerCase()}</p></div>)
+            },
 
         },
         {
@@ -197,10 +201,10 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                             <Button
                                 type="primary"
                                 onClick={() => {
-                                    setIsAddUserModalOpen(true)
+                                    navigate('/users')
                                 }}
                             >
-                                Add User
+                                User
                             </Button>
                             <Button
                                 type="primary"
@@ -338,10 +342,6 @@ const MedicineTable: React.FC<MedicineTableProps> = ({ medicines, setDebouncedSe
                 onConfirm={handleConfirmDelete}
                 isDeleteLoading={isDeleteLoading}
                 itemName={medicineToDelete?.medicineName || ""}
-            />
-            <AddUserModal
-                isAddUserModelOpen={isAddUserModalOpen}
-                setIsAddUserModelOpen={setIsAddUserModalOpen}
             />
         </div>
     );

@@ -124,7 +124,7 @@ const MedicineListPage: React.FC = () => {
     const fetchUsersData = async () => {
         try {
             const userData: any = await getApi('/user/get-all')
-            const userOptionsData = userData?.data?.data?.map((item: any) => ({
+            const userOptionsData = userData?.data?.data?.data?.map((item: any) => ({
                 label: item.name,
                 value: item.id
             }));

@@ -118,22 +118,25 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                 <Divider />
 
                 <Row gutter={24}>
-                <Col span={8}>
+                    <Col span={8}>
                         <Text strong>HSN Code :- </Text>
                         <Text>{medicine.hsnCode}</Text>
                     </Col>
                     <Col span={8}>
                         <Text strong>Salt Composition:- </Text>
                         {saltName?.map((val, index) => (
-                            <div className='flex'>{index + 1}.  <li className='ps-3' key={index}> {val}</li></div>
+                            <span className="ps-3" key={index}>
+                                {val} ({saltStrength[index]})
+                                {index !== saltName.length - 1 && " +"}
+                            </span>
                         ))}
+
                     </Col>
                     <Col span={8}>
-                        <Text strong>Salt Strength:- </Text>
-                        {saltStrength?.map((val, index) => (
-                            <div className='flex w-[212px]'>{index + 1}.  <li className='ps-3 break-words whitespace-normal w-[200px]' key={index}> {val}</li></div>
-                        ))}
+                        <Text strong>GST Percentage :- </Text>
+                        <Text>{medicine.gstPercentage}</Text>
                     </Col>
+
                     {/* <Col span={8}>
                         <Text strong>Route of Administration :- </Text>
                         <Text>{medicine.routeOfAdministration}</Text>
@@ -150,10 +153,7 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
 
                 <Divider />
                 <Row gutter={24}>
-                <Col span={8}>
-                        <Text strong>GST Percentage :- </Text>
-                        <Text>{medicine.gstPercentage}</Text>
-                    </Col>
+
                     <Col span={8}>
                         <Text strong>Flavors :- </Text>
                         <Text>{medicine.flavors}</Text>
@@ -162,14 +162,15 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                         <Text strong>Offers :- </Text>
                         <Text>{medicine.offers}</Text>
                     </Col>
-
-                </Row>
-                <Divider />
-                <Row gutter={24}>
                     <Col span={8}>
                         <Text strong>Sub Category :- </Text>
                         <Text>{getCategoryLabel(medicine.subCategory as ProductCategory)}</Text>
                     </Col>
+
+                </Row>
+                <Divider />
+                <Row gutter={24}>
+
                     <Col span={8}>
                         <Text strong>Route of Administration :- </Text>
                         <Text>{medicine.routeOfAdministration}</Text>
@@ -178,15 +179,10 @@ const MedicineModal: React.FC<MedicineModalProps> = ({ medicine, onClose, doseFo
                         <Text strong>Side Effects :- </Text>
                         <Text>{medicine.sideEffects}</Text>
                     </Col>
-
-                </Row>
-                <Divider />
-                <Row gutter={24}>
                     <Col span={8}>
                         <Text strong>NDC :- </Text>
                         <Text>{medicine.ndc}</Text>
                     </Col>
-                    
 
                 </Row>
 

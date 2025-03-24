@@ -4,7 +4,7 @@ import { Modal, Input, Form, Button } from 'antd';
 import { toast } from 'react-toastify';
 import { postApi } from '../../apis';
 
-const AddUserModal = ({ isAddUserModelOpen, setIsAddUserModelOpen }: { isAddUserModelOpen: boolean, setIsAddUserModelOpen: any }) => {
+const AddUserModal = ({ isAddUserModelOpen, setIsAddUserModelOpen,fetchUsers }: { isAddUserModelOpen: boolean, setIsAddUserModelOpen: any,fetchUsers :any }) => {
 
     const [loading, setLoading] = useState(false);
 
@@ -18,6 +18,7 @@ const AddUserModal = ({ isAddUserModelOpen, setIsAddUserModelOpen }: { isAddUser
         try {
             setLoading(true);
             await postApi(`/user/create-user`,{...values,role:"USER"});
+            fetchUsers()
             toast.success("User logged in successfully");
         }
         catch (e: any) {
