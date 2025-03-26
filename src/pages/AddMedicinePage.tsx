@@ -15,6 +15,7 @@ import { getApi } from '../apis';
 import { Button } from 'antd';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import AddDoseFormModal from '../components/AddDoseFormModal';
+import { jwtDecode } from 'jwt-decode';
 const AddMedicinePage: React.FC = () => {
 
     const { id } = useParams();
@@ -74,8 +75,18 @@ const AddMedicinePage: React.FC = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
 
-   
+
     useEffect(() => {
+        if (id) {
+            const tokenData: {
+                role: string;
+                id: string;
+            } = jwtDecode(localStorage.getItem('accessToken') as string);
+
+            if (tokenData?.role !== "ADMIN") {
+                navigate('/')
+            }
+        }
         if (id) {
             const fetchMedicine = async () => {
                 try {
